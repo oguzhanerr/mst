@@ -1,0 +1,14 @@
+# PostgreSQL driver for SQLAlchemy
+psycopg2-binary==2.9.10
+# Snowflake SQLAlchemy connector
+snowflake-sqlalchemy==1.7.7
+# Celery and Redis for async processing and messaging
+celery[redis]==5.5.3
+# Redis client library
+redis==5.0.8
+# WSGI HTTP server for running Superset (Web Server Gateway Interface (WSGI)
+gunicorn==23.0.0
+# Asynchronous worker library for concurrency
+gevent==24.11.1
+# For image processing (screenshots, etc.)
+Pillow==11.3.0

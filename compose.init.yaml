@@ -1,0 +1,52 @@
+services:
+  redis:
+    image: redis:latest
+    container_name: superset_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  metadata_db:
+    image: postgres:16.6
+    container_name: superset_metadata
+    restart: unless-stopped
+    env_file:
+      - env/.metadata.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - metadata_pgdata:/var/lib/postgresql/data
+
+  database:
+    build:
+      context: ./database
+      dockerfile: Dockerfile
+    platform: linux/amd64
+    container_name: mst_database
+    restart: unless-stopped
+    env_file:
+      - env/.database.env
+    ports:
+      - "5434:5432"
+    volumes:
+      - mst_pgdata:/var/lib/postgresql/data
+
+  superset_init:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: superset_init
+    env_file:
+      - env/.superset.env
+    command: ["/docker/superset-init.sh"]
+    depends_on:
+      - metadata_db
+      - redis
+      - database
+
+volumes:
+  mst_pgdata:
+  metadata_pgdata:
+  redis_data:

@@ -1,0 +1,19 @@
+# OS files
+.DS_Store
+
+# Python
+env/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment variables
+.env
+.env.local

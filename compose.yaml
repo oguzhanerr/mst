@@ -1,0 +1,86 @@
+x-superset-depends-on: &superset-depends-on
+  - metadata_db
+  - redis
+  - database
+
+services:
+  redis:
+    image: redis:latest
+    container_name: superset_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  metadata_db:
+    image: postgres:16.6
+    container_name: superset_metadata
+    restart: unless-stopped
+    env_file:
+      - env/.metadata.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - metadata_pgdata:/var/lib/postgresql/data
+
+  database:
+    build:
+      context: ./database
+      dockerfile: Dockerfile
+    platform: linux/arm64
+    container_name: mst_database
+    restart: unless-stopped
+    env_file:
+      - env/.database.env
+    ports:
+      - "5434:5432"
+    volumes:
+      - mst_pgdata:/var/lib/postgresql/data
+
+  superset:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: superset_app
+    restart: always
+    env_file:
+      - env/.superset.env
+    ports:
+      - "8088:8088"
+    depends_on: *superset-depends-on
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: superset_celery_worker
+    restart: unless-stopped
+    env_file:
+      - env/.superset.env
+    environment:
+      - SE_AVOID_SELENIUM_MANAGER=1
+      - SE_DRIVER_PATH=/usr/bin/geckodriver
+    command: ["/docker/superset-celery.sh", "worker"]
+    user: superset
+    depends_on: *superset-depends-on
+
+  celery_beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: superset_celery_beat
+    restart: unless-stopped
+    env_file:
+      - env/.superset.env
+    environment:
+      - SE_AVOID_SELENIUM_MANAGER=1
+      - SE_DRIVER_PATH=/usr/bin/geckodriver
+    command: ["/docker/superset-celery.sh", "beat"]
+    user: superset
+    depends_on: *superset-depends-on
+
+volumes:
+  metadata_pgdata:
+  redis_data:
+  mst_pgdata:
