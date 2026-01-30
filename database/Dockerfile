@@ -1,4 +1,4 @@
-FROM postgis/postgis:16-3.4
+FROM postgis/postgis:17-3.5
 
 # Copy database initialization files
 COPY rwa_celltower.csv /docker-entrypoint-initdb.d/rwa_celltower.csv
