@@ -143,10 +143,10 @@ SELECT
     ROUND(latitude::numeric, 2) AS suggested_lat,
     ROUND(longitude::numeric, 2) AS suggested_lon,
     COUNT(*) AS unconnected_schools,
-    ROUND(AVG(nearest_LTE_distance)::numeric, 2) AS avg_distance_to_lte,
+    ROUND(AVG(nearest_lte_distance)::numeric, 2) AS avg_distance_to_lte,
     STRING_AGG(DISTINCT education_level, ', ') AS school_types
 FROM school
-WHERE NOT fourG
+WHERE NOT fourg
   AND latitude IS NOT NULL
   AND longitude IS NOT NULL
 GROUP BY ROUND(latitude::numeric, 2), ROUND(longitude::numeric, 2)

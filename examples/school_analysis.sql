@@ -9,11 +9,11 @@
 -- -----------------------------------------------------------------------------
 SELECT
     COUNT(*) AS total_schools,
-    SUM(CASE WHEN fourG THEN 1 ELSE 0 END) AS schools_with_4g,
-    SUM(CASE WHEN threeG THEN 1 ELSE 0 END) AS schools_with_3g,
-    SUM(CASE WHEN twoG THEN 1 ELSE 0 END) AS schools_with_2g,
-    SUM(CASE WHEN NOT fourG AND NOT threeG AND NOT twoG THEN 1 ELSE 0 END) AS no_coverage,
-    ROUND(100.0 * SUM(CASE WHEN fourG THEN 1 ELSE 0 END) / COUNT(*), 2) AS pct_4g_coverage
+    SUM(CASE WHEN fourg THEN 1 ELSE 0 END) AS schools_with_4g,
+    SUM(CASE WHEN threeg THEN 1 ELSE 0 END) AS schools_with_3g,
+    SUM(CASE WHEN twog THEN 1 ELSE 0 END) AS schools_with_2g,
+    SUM(CASE WHEN NOT fourg AND NOT threeg AND NOT twog THEN 1 ELSE 0 END) AS no_coverage,
+    ROUND(100.0 * SUM(CASE WHEN fourg THEN 1 ELSE 0 END) / COUNT(*), 2) AS pct_4g_coverage
 FROM school;
 
 
@@ -24,11 +24,11 @@ FROM school;
 SELECT
     education_level,
     COUNT(*) AS school_count,
-    SUM(CASE WHEN fourG THEN 1 ELSE 0 END) AS with_4g,
-    SUM(CASE WHEN threeG AND NOT fourG THEN 1 ELSE 0 END) AS with_3g_only,
-    SUM(CASE WHEN twoG AND NOT threeG AND NOT fourG THEN 1 ELSE 0 END) AS with_2g_only,
-    SUM(CASE WHEN NOT fourG AND NOT threeG AND NOT twoG THEN 1 ELSE 0 END) AS no_coverage,
-    ROUND(100.0 * SUM(CASE WHEN fourG THEN 1 ELSE 0 END) / COUNT(*), 2) AS pct_4g
+    SUM(CASE WHEN fourg THEN 1 ELSE 0 END) AS with_4g,
+    SUM(CASE WHEN threeg AND NOT fourg THEN 1 ELSE 0 END) AS with_3g_only,
+    SUM(CASE WHEN twog AND NOT threeg AND NOT fourg THEN 1 ELSE 0 END) AS with_2g_only,
+    SUM(CASE WHEN NOT fourg AND NOT threeg AND NOT twog THEN 1 ELSE 0 END) AS no_coverage,
+    ROUND(100.0 * SUM(CASE WHEN fourg THEN 1 ELSE 0 END) / COUNT(*), 2) AS pct_4g
 FROM school
 GROUP BY education_level
 ORDER BY school_count DESC;
@@ -44,12 +44,12 @@ SELECT
     latitude,
     longitude,
     electricity_availability,
-    nearest_LTE_distance,
-    nearest_UMTS_distance,
-    nearest_GSM_distance,
+    nearest_lte_distance,
+    nearest_umts_distance,
+    nearest_gsm_distance,
     fiber_node_distance
 FROM school
-WHERE NOT fourG AND NOT threeG AND NOT twoG
+WHERE NOT fourg AND NOT threeg AND NOT twog
 ORDER BY fiber_node_distance ASC
 LIMIT 100;
 
@@ -64,10 +64,10 @@ SELECT
     latitude,
     longitude,
     fiber_node_distance,
-    nearest_LTE_distance,
+    nearest_lte_distance,
     electricity_availability
 FROM school
-WHERE NOT fourG
+WHERE NOT fourg
   AND fiber_node_distance < 5  -- Within 5km of fiber
 ORDER BY fiber_node_distance ASC;
 
@@ -80,8 +80,8 @@ SELECT
     electricity_availability,
     internet_availability,
     COUNT(*) AS school_count,
-    SUM(CASE WHEN fourG THEN 1 ELSE 0 END) AS with_4g,
-    ROUND(100.0 * SUM(CASE WHEN fourG THEN 1 ELSE 0 END) / COUNT(*), 2) AS pct_4g
+    SUM(CASE WHEN fourg THEN 1 ELSE 0 END) AS with_4g,
+    ROUND(100.0 * SUM(CASE WHEN fourg THEN 1 ELSE 0 END) / COUNT(*), 2) AS pct_4g
 FROM school
 GROUP BY electricity_availability, internet_availability
 ORDER BY school_count DESC;
@@ -93,23 +93,23 @@ ORDER BY school_count DESC;
 -- -----------------------------------------------------------------------------
 SELECT
     CASE
-        WHEN nearest_LTE_distance < 1 THEN '< 1 km'
-        WHEN nearest_LTE_distance < 5 THEN '1-5 km'
-        WHEN nearest_LTE_distance < 10 THEN '5-10 km'
-        WHEN nearest_LTE_distance < 20 THEN '10-20 km'
+        WHEN nearest_lte_distance < 1 THEN '< 1 km'
+        WHEN nearest_lte_distance < 5 THEN '1-5 km'
+        WHEN nearest_lte_distance < 10 THEN '5-10 km'
+        WHEN nearest_lte_distance < 20 THEN '10-20 km'
         ELSE '> 20 km'
     END AS distance_to_lte,
     COUNT(*) AS school_count,
-    SUM(CASE WHEN fourG THEN 1 ELSE 0 END) AS with_4g_coverage,
-    ROUND(100.0 * SUM(CASE WHEN fourG THEN 1 ELSE 0 END) / COUNT(*), 2) AS pct_covered
+    SUM(CASE WHEN fourg THEN 1 ELSE 0 END) AS with_4g_coverage,
+    ROUND(100.0 * SUM(CASE WHEN fourg THEN 1 ELSE 0 END) / COUNT(*), 2) AS pct_covered
 FROM school
 GROUP BY 1
 ORDER BY 
     CASE
-        WHEN nearest_LTE_distance < 1 THEN 1
-        WHEN nearest_LTE_distance < 5 THEN 2
-        WHEN nearest_LTE_distance < 10 THEN 3
-        WHEN nearest_LTE_distance < 20 THEN 4
+        WHEN nearest_lte_distance < 1 THEN 1
+        WHEN nearest_lte_distance < 5 THEN 2
+        WHEN nearest_lte_distance < 10 THEN 3
+        WHEN nearest_lte_distance < 20 THEN 4
         ELSE 5
     END;
 
@@ -124,9 +124,9 @@ SELECT
     longitude,
     education_level,
     CASE
-        WHEN fourG THEN '4G'
-        WHEN threeG THEN '3G'
-        WHEN twoG THEN '2G'
+        WHEN fourg THEN '4G'
+        WHEN threeg THEN '3G'
+        WHEN twog THEN '2G'
         ELSE 'No Coverage'
     END AS coverage_type,
     electricity_availability,
@@ -145,20 +145,20 @@ SELECT
     latitude,
     longitude,
     CASE
-        WHEN NOT fourG AND NOT threeG AND NOT twoG THEN 'Critical - No Coverage'
-        WHEN NOT fourG AND NOT threeG THEN 'High - 2G Only'
-        WHEN NOT fourG THEN 'Medium - 3G Only'
+        WHEN NOT fourg AND NOT threeg AND NOT twog THEN 'Critical - No Coverage'
+        WHEN NOT fourg AND NOT threeg THEN 'High - 2G Only'
+        WHEN NOT fourg THEN 'Medium - 3G Only'
         ELSE 'Low - Has 4G'
     END AS upgrade_priority,
-    nearest_LTE_distance,
+    nearest_lte_distance,
     fiber_node_distance,
     electricity_availability
 FROM school
 ORDER BY
     CASE
-        WHEN NOT fourG AND NOT threeG AND NOT twoG THEN 1
-        WHEN NOT fourG AND NOT threeG THEN 2
-        WHEN NOT fourG THEN 3
+        WHEN NOT fourg AND NOT threeg AND NOT twog THEN 1
+        WHEN NOT fourg AND NOT threeg THEN 2
+        WHEN NOT fourg THEN 3
         ELSE 4
     END,
     fiber_node_distance ASC;

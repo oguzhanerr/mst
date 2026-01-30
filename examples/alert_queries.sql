@@ -9,7 +9,7 @@
 -- Condition: result < 70 (less than 70% coverage)
 -- -----------------------------------------------------------------------------
 SELECT
-    ROUND(100.0 * SUM(CASE WHEN fourG THEN 1 ELSE 0 END) / COUNT(*), 2) AS coverage_percentage
+    ROUND(100.0 * SUM(CASE WHEN fourg THEN 1 ELSE 0 END) / COUNT(*), 2) AS coverage_percentage
 FROM school;
 
 
@@ -20,7 +20,7 @@ FROM school;
 -- -----------------------------------------------------------------------------
 SELECT COUNT(*) AS schools_without_coverage
 FROM school
-WHERE NOT fourG AND NOT threeG AND NOT twoG;
+WHERE NOT fourg AND NOT threeg AND NOT twog;
 
 
 -- -----------------------------------------------------------------------------
@@ -31,7 +31,7 @@ WHERE NOT fourG AND NOT threeG AND NOT twoG;
 -- -----------------------------------------------------------------------------
 SELECT COUNT(*) AS new_uncovered_schools
 FROM school
-WHERE NOT fourG AND NOT threeG AND NOT twoG
+WHERE NOT fourg AND NOT threeg AND NOT twog
   AND fiber_node_distance < 10;  -- Priority: close to fiber but uncovered
 
 
@@ -59,9 +59,9 @@ FROM celltower;
 -- Trigger: If average distance to LTE increases (infrastructure issue)
 -- Condition: result > 15 (average > 15km to LTE)
 -- -----------------------------------------------------------------------------
-SELECT ROUND(AVG(nearest_LTE_distance)::numeric, 2) AS avg_lte_distance
+SELECT ROUND(AVG(nearest_lte_distance)::numeric, 2) AS avg_lte_distance
 FROM school
-WHERE nearest_LTE_distance IS NOT NULL;
+WHERE nearest_lte_distance IS NOT NULL;
 
 
 -- -----------------------------------------------------------------------------
@@ -72,7 +72,7 @@ WHERE nearest_LTE_distance IS NOT NULL;
 SELECT COUNT(*) AS schools_far_from_fiber
 FROM school
 WHERE fiber_node_distance > 50  -- More than 50km from fiber
-  AND NOT fourG;
+  AND NOT fourg;
 
 
 -- -----------------------------------------------------------------------------
@@ -82,7 +82,7 @@ WHERE fiber_node_distance > 50  -- More than 50km from fiber
 -- -----------------------------------------------------------------------------
 SELECT COUNT(*) AS critical_schools
 FROM school
-WHERE NOT fourG AND NOT threeG AND NOT twoG
+WHERE NOT fourg AND NOT threeg AND NOT twog
   AND (electricity_availability IS NULL OR electricity_availability = 'No');
 
 
@@ -98,7 +98,7 @@ FROM school
 UNION ALL
 SELECT
     '4G Coverage %',
-    ROUND(100.0 * SUM(CASE WHEN fourG THEN 1 ELSE 0 END) / COUNT(*), 1)::text || '%',
+    ROUND(100.0 * SUM(CASE WHEN fourg THEN 1 ELSE 0 END) / COUNT(*), 1)::text || '%',
     '-'
 FROM school
 UNION ALL
@@ -106,11 +106,11 @@ SELECT
     'Schools No Coverage',
     COUNT(*)::text,
     '-'
-FROM school WHERE NOT fourG AND NOT threeG AND NOT twoG
+FROM school WHERE NOT fourg AND NOT threeg AND NOT twog
 UNION ALL
 SELECT
     'Avg Distance to LTE',
-    ROUND(AVG(nearest_LTE_distance)::numeric, 2)::text || ' km',
+    ROUND(AVG(nearest_lte_distance)::numeric, 2)::text || ' km',
     '-'
 FROM school
 UNION ALL
