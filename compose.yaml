@@ -20,7 +20,7 @@ services:
     env_file:
       - env/.metadata.env
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - metadata_pgdata:/var/lib/postgresql/data
 
@@ -48,6 +48,8 @@ services:
       - env/.superset.env
     ports:
       - "8088:8088"
+    volumes:
+      - superset_home:/app/superset_home
     depends_on: *superset-depends-on
 
   celery_worker:
@@ -62,6 +64,8 @@ services:
       - SE_AVOID_SELENIUM_MANAGER=1
       - SE_DRIVER_PATH=/usr/bin/geckodriver
     command: ["/docker/superset-celery.sh", "worker"]
+    volumes:
+      - superset_home:/app/superset_home
     user: superset
     depends_on: *superset-depends-on
 
@@ -77,6 +81,8 @@ services:
       - SE_AVOID_SELENIUM_MANAGER=1
       - SE_DRIVER_PATH=/usr/bin/geckodriver
     command: ["/docker/superset-celery.sh", "beat"]
+    volumes:
+      - superset_home:/app/superset_home
     user: superset
     depends_on: *superset-depends-on
 
@@ -84,3 +90,4 @@ volumes:
   metadata_pgdata:
   redis_data:
   mst_pgdata:
+  superset_home:

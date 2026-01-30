@@ -41,6 +41,8 @@ services:
     env_file:
       - env/.superset.env
     command: ["/docker/superset-init.sh"]
+    volumes:
+      - superset_home:/app/superset_home
     depends_on:
       - metadata_db
       - redis
@@ -50,3 +52,4 @@ volumes:
   mst_pgdata:
   metadata_pgdata:
   redis_data:
+  superset_home:

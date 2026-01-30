@@ -2,7 +2,6 @@
 .DS_Store
 
 # Python
-env/
 venv/
 __pycache__/
 *.pyc
@@ -14,6 +13,15 @@ __pycache__/
 *.swp
 *.swo
 
-# Environment variables
+# Environment variables (secrets)
 .env
 .env.local
+env/.superset.env
+env/.database.env
+env/.metadata.env
+!env/*.template
+
+# AWS/Deployment
+*.tfstate
+*.tfstate.backup
+.terraform/
