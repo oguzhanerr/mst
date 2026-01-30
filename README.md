@@ -125,30 +125,46 @@ Quick deploy:
 
 ```
 mst/
-├── compose.yaml              # Production Docker Compose
-├── compose.init.yaml         # Initialization compose file
-├── Dockerfile                # Superset image build
-├── superset_config.py        # Superset configuration
-├── requirements.txt          # Python dependencies
+├── .github/
+│   ├── ISSUE_TEMPLATE/       # Bug report & feature request templates
+│   ├── workflows/deploy.yml  # CI/CD pipeline
+│   ├── dependabot.yml        # Automated dependency updates
+│   └── PULL_REQUEST_TEMPLATE.md
+├── cloudformation/
+│   └── vpc.yaml              # AWS infrastructure template
 ├── database/
 │   ├── Dockerfile            # PostGIS image build
 │   ├── init.sql              # Schema and data loading
-│   └── *.csv                 # Rwanda data files
+│   ├── rwa_school.csv        # Rwanda school data
+│   ├── rwa_celltower.csv     # Cell tower data
+│   └── coverage.csv          # Coverage polygons
 ├── docker/
+│   ├── src/img/              # Custom branding (logos, favicon)
 │   ├── superset-entrypoint.sh
 │   ├── superset-init.sh
-│   ├── superset-celery.sh
-│   └── src/img/              # Custom branding assets
+│   └── superset-celery.sh
+├── docs/
+│   └── AWS_DEPLOYMENT.md     # AWS deployment guide
 ├── env/
 │   ├── .superset.env.template
 │   ├── .database.env.template
 │   └── .metadata.env.template
-├── docs/
-│   └── AWS_DEPLOYMENT.md     # AWS deployment guide
-├── cloudformation/
-│   └── vpc.yaml              # AWS infrastructure template
-└── scripts/
-    └── deploy-aws.sh         # AWS deployment script
+├── examples/
+│   └── snowflake_alerts_demo.sql  # Superset alerts demo
+├── scripts/
+│   └── deploy-aws.sh         # AWS deployment helper
+├── .dockerignore             # Docker build exclusions
+├── .editorconfig             # Editor formatting rules
+├── CHANGELOG.md              # Version history
+├── CONTRIBUTING.md           # Contribution guidelines
+├── compose.yaml              # Production Docker Compose
+├── compose.init.yaml         # Initialization compose
+├── Dockerfile                # Superset image build
+├── LICENSE                   # MIT License
+├── README.md
+├── requirements.txt          # Python dependencies
+├── SECURITY.md               # Security policy
+└── superset_config.py        # Superset configuration
 ```
 
 ## Features
