@@ -1,8 +1,9 @@
 name: Deploy to AWS ECS
 
+# This workflow deploys to AWS ECS when manually triggered
+# Requires AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY secrets to be configured
+
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
     inputs:
       environment:
