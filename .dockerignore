@@ -1,0 +1,49 @@
+# Git
+.git
+.gitignore
+
+# Documentation
+*.md
+docs/
+LICENSE
+
+# Environment files (secrets)
+env/.superset.env
+env/.database.env
+env/.metadata.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+.venv/
+*.egg-info/
+
+# AWS/Terraform
+cloudformation/
+.terraform/
+*.tfstate
+*.tfstate.backup
+
+# CI/CD
+.github/
+
+# Scripts (not needed in image)
+scripts/
+
+# Local development
+docker-compose.override.yml
+*.local
