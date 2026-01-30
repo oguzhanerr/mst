@@ -1,0 +1,55 @@
+slice_name: Cell Tower Map
+description: null
+certified_by: null
+certification_details: null
+viz_type: deck_scatter
+params:
+  datasource: 27__table
+  viz_type: deck_scatter
+  slice_id: 151
+  spatial:
+    type: latlong
+    latCol: lat
+    lonCol: lon
+  row_limit: 10000
+  filter_nulls: true
+  adhoc_filters: []
+  mapbox_style: mapbox://styles/mapbox/light-v9
+  autozoom: true
+  viewport:
+    latitude: -2
+    longitude: 29.8
+    zoom: 7
+  point_radius_fixed:
+    type: fix
+    value: '10000'
+  point_unit: radius_m
+  min_radius: 1
+  max_radius: 3
+  multiplier: 1
+  legend_position: tl
+  legend_format: SMART_NUMBER
+  color_scheme_type: categorical_palette
+  dimension: radio_type
+  color_scheme: supersetColors
+  deafult_breakpoint_color:
+    r: 158
+    g: 158
+    b: 158
+    a: 1
+  js_columns:
+  - radio_type
+  time_grain_sqla: null
+  granularity: null
+  extra_form_data: {}
+  dashboards:
+  - 13
+  js_data_mutator: "\nfunction(data) {\n  const order = {'GSM': 1, 'UMTS': 2, 'LTE':\
+    \ 3};\n  return data.sort((a, b) => {\n    const aOrder = order[a.extraProps?.radio_type]\
+    \ || order[a.radio_type] || 0;\n    const bOrder = order[b.extraProps?.radio_type]\
+    \ || order[b.radio_type] || 0;\n    return aOrder - bOrder;\n  });\n}\n"
+query_context: '{"datasource":{"id":27,"type":"table"},"force":false,"queries":[{"filters":[],"extras":{"time_grain_sqla":null,"having":"","where":""},"applied_time_extras":{},"columns":[],"metrics":[],"annotation_layers":[],"row_limit":10000,"series_limit":0,"group_others_when_limit_reached":false,"order_desc":true,"url_params":{},"custom_params":{},"custom_form_data":{}}],"form_data":{"datasource":"27__table","viz_type":"deck_scatter","slice_id":151,"spatial":{"type":"latlong","latCol":"lat","lonCol":"lon"},"row_limit":10000,"filter_nulls":true,"adhoc_filters":[],"mapbox_style":"mapbox://styles/mapbox/light-v9","autozoom":true,"viewport":{"latitude":-2,"longitude":29.8,"zoom":7},"point_radius_fixed":{"type":"fix","value":"10000"},"point_unit":"radius_m","min_radius":1,"max_radius":3,"multiplier":1,"legend_position":"tl","legend_format":"SMART_NUMBER","color_scheme_type":"categorical_palette","dimension":"radio_type","color_scheme":"supersetColors","deafult_breakpoint_color":{"r":158,"g":158,"b":158,"a":1},"js_columns":["radio_type"],"time_grain_sqla":null,"granularity":null,"extra_form_data":{},"dashboards":[13],"force":false,"result_format":"json","result_type":"full"},"result_format":"json","result_type":"full"}'
+cache_timeout: null
+uuid: 916ff464-daaf-4640-8081-f7627c1eecac
+version: 1.0.0
+dataset_uuid: ff45c6d9-5518-4202-a28c-531d7e563c86

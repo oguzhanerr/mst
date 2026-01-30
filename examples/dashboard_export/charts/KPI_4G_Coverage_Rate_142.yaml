@@ -1,0 +1,35 @@
+slice_name: 'KPI: 4G Coverage Rate'
+description: null
+certified_by: null
+certification_details: null
+viz_type: big_number_total
+params:
+  datasource: 26__table
+  viz_type: big_number_total
+  slice_id: 142
+  metric:
+    expressionType: SQL
+    label: 4G %
+    sqlExpression: ROUND(100.0 * SUM(CASE WHEN fourg THEN 1 ELSE 0 END) / COUNT(*),
+      1)
+  adhoc_filters: []
+  header_font_size: 0.3
+  subtitle: 4G Coverage Rate
+  subtitle_font_size: 0.125
+  metric_name_font_size: 0.15
+  y_axis_format: .1f
+  time_format: smart_date
+  conditional_formatting: []
+  extra_form_data: {}
+  dashboards:
+  - 14
+  - 13
+query_context: '{"datasource":{"id":26,"type":"table"},"force":false,"queries":[{"filters":[],"extras":{"having":"","where":""},"applied_time_extras":{},"columns":[],"metrics":[{"expressionType":"SQL","label":"4G
+  %","sqlExpression":"ROUND(100.0 * SUM(CASE WHEN fourg THEN 1 ELSE 0 END) / COUNT(*),
+  1)"}],"annotation_layers":[],"series_limit":0,"group_others_when_limit_reached":false,"order_desc":true,"url_params":{},"custom_params":{},"custom_form_data":{}}],"form_data":{"datasource":"26__table","viz_type":"big_number_total","slice_id":142,"metric":{"expressionType":"SQL","label":"4G
+  %","sqlExpression":"ROUND(100.0 * SUM(CASE WHEN fourg THEN 1 ELSE 0 END) / COUNT(*),
+  1)"},"adhoc_filters":[],"header_font_size":0.3,"subtitle":"4G Coverage Rate","subtitle_font_size":0.125,"metric_name_font_size":0.15,"y_axis_format":".1f","time_format":"smart_date","conditional_formatting":[],"extra_form_data":{},"dashboards":[14,13],"force":false,"result_format":"json","result_type":"full"},"result_format":"json","result_type":"full"}'
+cache_timeout: null
+uuid: 80b6524a-b7f1-4412-b478-cead5809c846
+version: 1.0.0
+dataset_uuid: a1eadc46-5f34-40b2-9824-21c6b2418a4e

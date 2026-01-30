@@ -1,0 +1,793 @@
+dashboard_title: Mobile Simulation Tool
+description: null
+css: "/* Target the legend by its position and structure */\ndiv[style*=\"position:\
+  \ absolute\"][style*=\"left: 10px\"] {\n  transform: scale(1);\n  transform-origin:\
+  \ top left;\n}\n\n/* Or target the list items inside */\ndiv[style*=\"position:\
+  \ absolute\"][style*=\"left: 10px\"] ul {\n  font-size: 16px !important;\n}\n\n\
+  div[style*=\"position: absolute\"][style*=\"left: 10px\"] li span {\n  font-size:\
+  \ 16px !important;\n}"
+slug: mst
+certified_by: ''
+certification_details: ''
+published: true
+uuid: a7e012e3-2e3b-4a8e-b102-9ad1da7055f2
+position:
+  CHART-2CcfG3DHbCqIGz4V5p0FD:
+    children: []
+    id: CHART-2CcfG3DHbCqIGz4V5p0FD
+    meta:
+      chartId: 141
+      height: 50
+      sliceName: 'KPI: Total Schools'
+      sliceNameOverride: Total Schools
+      uuid: 1049f044-8731-476a-abd1-8a5125fe6ca1
+      width: 2
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-AsMaxdYL_t
+    - ROW-fbNlpi9Rvz42KFaYJJ_8t
+    type: CHART
+  CHART-9ObH5NrD9yUB1qdh6bNac:
+    children: []
+    id: CHART-9ObH5NrD9yUB1qdh6bNac
+    meta:
+      chartId: 145
+      height: 50
+      sliceName: 'KPI: Total Towers'
+      sliceNameOverride: Total Towers
+      uuid: 42b799f8-2b10-4c47-a108-ccab03c7d82e
+      width: 2
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-AsMaxdYL_t
+    - ROW-fbNlpi9Rvz42KFaYJJ_8t
+    type: CHART
+  CHART-COVERAGE-GEOJSON:
+    children: []
+    id: CHART-COVERAGE-GEOJSON
+    meta:
+      chartId: 155
+      height: 80
+      sliceName: 4G Coverage Polygons
+      sliceNameOverride: 4G Coverage Areas (Rwanda)
+      uuid: 92908050-73c2-46b7-a6a8-eaa97e595bed
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-l_9I0aNYZ
+    - ROW-COVERAGE-GEOJSON
+    type: CHART
+  CHART-Cdx0zVYlRJfhSanKFWGHB:
+    children: []
+    id: CHART-Cdx0zVYlRJfhSanKFWGHB
+    meta:
+      chartId: 143
+      height: 50
+      sliceName: 'KPI: Schools No Coverage'
+      sliceNameOverride: Without 4G Coverage
+      uuid: c5e0641e-3d42-49ac-a99c-d07410c42657
+      width: 2
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-AsMaxdYL_t
+    - ROW-fbNlpi9Rvz42KFaYJJ_8t
+    type: CHART
+  CHART-DepUsjq9wwFqTLKVt_Mzc:
+    children: []
+    id: CHART-DepUsjq9wwFqTLKVt_Mzc
+    meta:
+      chartId: 146
+      height: 50
+      sliceName: 'KPI: LTE Towers'
+      sliceNameOverride: LTE Towers
+      uuid: 269fb774-8cf9-440c-a6f7-12356ce3ef3e
+      width: 2
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-YT6eNksV-
+    - ROW-TOWER-MAIN
+    - COLUMN-TOWER-STATS
+    type: CHART
+  CHART-IH9R-GxH9MQFtMDCAXJaC:
+    children: []
+    id: CHART-IH9R-GxH9MQFtMDCAXJaC
+    meta:
+      chartId: 142
+      height: 50
+      sliceName: 'KPI: 4G Coverage Rate'
+      sliceNameOverride: 4G Coverage Rate
+      uuid: 80b6524a-b7f1-4412-b478-cead5809c846
+      width: 2
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-AsMaxdYL_t
+    - ROW-fbNlpi9Rvz42KFaYJJ_8t
+    type: CHART
+  CHART-Q3pbwsH3id:
+    children: []
+    id: CHART-Q3pbwsH3id
+    meta:
+      chartId: 130
+      height: 55
+      sliceName: Connectivity Distribution
+      sliceNameOverride: Technology Distribution of the Connected Schools
+      uuid: 0a502934-c50c-4130-9104-25198bdfe50f
+      width: 3
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-Bvm0ER4DR9R8Ka-rPsq25
+    - ROW-9SZLltEk3ckxj01CG6yiB
+    - COLUMN-2rBHSzf7slxEnVeiWwtX3
+    - ROW-QIIuRE3anXv0bG9PiZGNo
+    type: CHART
+  CHART-TOWER-MAP:
+    children: []
+    id: CHART-TOWER-MAP
+    meta:
+      chartId: 151
+      height: 114
+      sliceName: Cell Tower Map
+      sliceNameOverride: Cell Tower Locations (Rwanda)
+      uuid: 916ff464-daaf-4640-8081-f7627c1eecac
+      width: 10
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-YT6eNksV-
+    - ROW-TOWER-MAIN
+    type: CHART
+  CHART-TOWER-PIE:
+    children: []
+    id: CHART-TOWER-PIE
+    meta:
+      chartId: 147
+      height: 50
+      sliceName: Tower Distribution by Type
+      sliceNameOverride: Tower Distribution by Radio Type
+      uuid: 90c647fe-4653-4fad-80f6-6922f46bd693
+      width: 3
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-YT6eNksV-
+    - ROW-TOWER-MAIN
+    - COLUMN-TOWER-STATS
+    type: CHART
+  CHART-b5awP81W21t-JmvaMdf5p:
+    children: []
+    id: CHART-b5awP81W21t-JmvaMdf5p
+    meta:
+      chartId: 150
+      height: 50
+      sliceName: Dynamic Insights Summary
+      sliceNameOverride: Summary of the Insights
+      uuid: 85397100-3651-4477-97ed-89654d521b0e
+      width: 2
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-AsMaxdYL_t
+    - ROW-fbNlpi9Rvz42KFaYJJ_8t
+    type: CHART
+  CHART-explore-410-1:
+    children: []
+    id: CHART-explore-410-1
+    meta:
+      chartId: 135
+      height: 50
+      sliceName: Electricity Availability
+      sliceNameOverride: Electricity Availability in All Schools
+      uuid: 5f3beb7d-6e78-4d5b-81f4-2dab63809559
+      width: 3
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-Bvm0ER4DR9R8Ka-rPsq25
+    - ROW-9SZLltEk3ckxj01CG6yiB
+    - COLUMN-2rBHSzf7slxEnVeiWwtX3
+    type: CHART
+  CHART-oYL7TIQoRRCkuyG91I7CE:
+    children: []
+    id: CHART-oYL7TIQoRRCkuyG91I7CE
+    meta:
+      chartId: 124
+      height: 114
+      sliceName: School Coverage Map
+      sliceNameOverride: 4G Coverage in Schools (Rwanda)
+      uuid: a7e3f4d1-b458-4f44-8504-59baf929af93
+      width: 9
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-Bvm0ER4DR9R8Ka-rPsq25
+    - ROW-9SZLltEk3ckxj01CG6yiB
+    type: CHART
+  COLUMN-2rBHSzf7slxEnVeiWwtX3:
+    children:
+    - ROW-QIIuRE3anXv0bG9PiZGNo
+    - CHART-explore-410-1
+    id: COLUMN-2rBHSzf7slxEnVeiWwtX3
+    meta:
+      background: BACKGROUND_TRANSPARENT
+      width: 3
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-Bvm0ER4DR9R8Ka-rPsq25
+    - ROW-9SZLltEk3ckxj01CG6yiB
+    type: COLUMN
+  COLUMN-OnpvP8mx1r6Xx8BraWmaf:
+    children:
+    - MARKDOWN-k3GCj3ivub3M7LvcmRY49
+    - MARKDOWN-NyKWzhxAIhN1b0nAxjoJa
+    id: COLUMN-OnpvP8mx1r6Xx8BraWmaf
+    meta:
+      background: BACKGROUND_TRANSPARENT
+      width: 3
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-AsMaxdYL_t
+    - ROW-y-GwJPgxLr
+    type: COLUMN
+  COLUMN-TOWER-STATS:
+    children:
+    - CHART-TOWER-PIE
+    - CHART-DepUsjq9wwFqTLKVt_Mzc
+    id: COLUMN-TOWER-STATS
+    meta:
+      background: BACKGROUND_TRANSPARENT
+      width: 2
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-YT6eNksV-
+    - ROW-TOWER-MAIN
+    type: COLUMN
+  COLUMN-kybTuvfQYFjh1dlTtuTOp:
+    children:
+    - ROW-WN9A7D9_BC-at-i5LJ_d5
+    id: COLUMN-kybTuvfQYFjh1dlTtuTOp
+    meta:
+      background: BACKGROUND_TRANSPARENT
+      width: 2
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-AsMaxdYL_t
+    - ROW-y-GwJPgxLr
+    type: COLUMN
+  DASHBOARD_VERSION_KEY: v2
+  GRID_ID:
+    children:
+    - TABS-L-d9eyOE-b
+    id: GRID_ID
+    parents:
+    - ROOT_ID
+    type: GRID
+  HEADER_ID:
+    id: HEADER_ID
+    meta:
+      text: Mobile Simulation Tool
+    type: HEADER
+  MARKDOWN-3xNBR5FTWrm6fg_MlB3jT:
+    children: []
+    id: MARKDOWN-3xNBR5FTWrm6fg_MlB3jT
+    meta:
+      code: '
+
+
+        '
+      height: 49
+      width: 2
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-AsMaxdYL_t
+    - ROW-y-GwJPgxLr
+    - COLUMN-kybTuvfQYFjh1dlTtuTOp
+    - ROW-WN9A7D9_BC-at-i5LJ_d5
+    type: MARKDOWN
+  MARKDOWN-8cmrckID8gZYoOFktmFhU:
+    children: []
+    id: MARKDOWN-8cmrckID8gZYoOFktmFhU
+    meta:
+      code: '
+
+        *Powered by Apache Superset with Deck.gl layers on PostGIS/GeoJSON data. Contact
+        for source code or custom runs.*'
+      height: 6
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-Bvm0ER4DR9R8Ka-rPsq25
+    - ROW-2uad2hvRXmTZFlxeqvqBa
+    type: MARKDOWN
+  MARKDOWN-BjHlOooefas8VBvVfxIB4:
+    children: []
+    id: MARKDOWN-BjHlOooefas8VBvVfxIB4
+    meta:
+      code: '
+
+        *Powered by Apache Superset with Deck.gl layers on PostGIS/GeoJSON data. Contact
+        for source code or custom runs. Cell tower data retrieved from [OpenCellID](https://www.opencellid.org/#zoom=16&lat=37.77889&lon=-122.41942).*'
+      height: 8
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-YT6eNksV-
+    - ROW-ftdKnWiM-22XP-9KDY6ID
+    type: MARKDOWN
+  MARKDOWN-NyKWzhxAIhN1b0nAxjoJa:
+    children: []
+    id: MARKDOWN-NyKWzhxAIhN1b0nAxjoJa
+    meta:
+      code: '**Resources:**
+
+        - [ITU-R P.1812-7 Spec (PDF)](https://www.itu.int/rec/R-REC-P.1812)
+
+        - [Giga: Connect Every School](https://giga.global)
+
+        - [Superset Deck.gl Guide](https://superset.apache.org/docs/using-superset/creating-charts-dashboards/creating-your-first-dashboard/)
+
+        - [Propagation Viz Examples](https://carto.com/blog/scale-your-signal-propagation-analysis-with-carto-workflows)
+
+        '
+      height: 22
+      width: 2
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-AsMaxdYL_t
+    - ROW-y-GwJPgxLr
+    - COLUMN-OnpvP8mx1r6Xx8BraWmaf
+    type: MARKDOWN
+  MARKDOWN-__u6CsUyfh:
+    children: []
+    id: MARKDOWN-__u6CsUyfh
+    meta:
+      code: "# Mobile Coverage Simulation Dashboard\n\n**Overview:** This interactive\
+        \ dashboard showcases results from our open-source ITU-R P.1812 propagation\
+        \ model simulator, developed for the UNICEF-ITU Giga initiative to map and\
+        \ optimize school connectivity in Benin and beyond. P.1812 enables path-specific\
+        \ predictions for point-to-area services (30 MHz\u20136 GHz), factoring terrain\
+        \ profiles, clutter, and distances up to 3,000 km for accurate VHF/UHF coverage\
+        \ forecasting.\n\n**Key Visualization Layers:**\n- **Heatmap:** Signal strength\
+        \ (RSSI/dBm) density from simulated grids\n- **Scatterplots:** Cell towers\
+        \ (colored by telecommunications technologies) and Schools (colored by coverage)\n\
+        - **Contours/Polygons:** Coverage thresholds (e.g., green >-90 dBm reliable;\
+        \ red outages)\n\n**Interactive Features:** \n- Sliders/dropdowns for sim\
+        \ parameters (frequency, EIRP, clutter type, tower height)\n- Cross-filtering\
+        \ updates all metrics live: avg coverage %, uncovered schools (km\xB2), path\
+        \ loss percentiles\n- Compare models (P.1812 vs. baselines) or scenarios for\
+        \ gap analysis."
+      height: 48
+      width: 7
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-AsMaxdYL_t
+    - ROW-y-GwJPgxLr
+    type: MARKDOWN
+  MARKDOWN-b3_B7dN4ueCX_iT5RAqvQ:
+    children: []
+    id: MARKDOWN-b3_B7dN4ueCX_iT5RAqvQ
+    meta:
+      code: '
+
+        *Powered by Apache Superset with Deck.gl layers on PostGIS/GeoJSON data. Contact
+        for source code or custom runs.*'
+      height: 8
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-AsMaxdYL_t
+    - ROW-5pZ9jSmd4v6TjvmeUez9J
+    type: MARKDOWN
+  MARKDOWN-k3GCj3ivub3M7LvcmRY49:
+    children: []
+    id: MARKDOWN-k3GCj3ivub3M7LvcmRY49
+    meta:
+      code: <img src="https://help.unicef.org/sites/default/files/styles/corporate_partner_logos/public/2025-02/GIGA_lockup_allcolour_horizontal.jpg?itok=gpy8GSh1">
+      height: 30
+      width: 2
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-AsMaxdYL_t
+    - ROW-y-GwJPgxLr
+    - COLUMN-OnpvP8mx1r6Xx8BraWmaf
+    type: MARKDOWN
+  ROOT_ID:
+    children:
+    - GRID_ID
+    id: ROOT_ID
+    type: ROOT
+  ROW-2uad2hvRXmTZFlxeqvqBa:
+    children:
+    - MARKDOWN-8cmrckID8gZYoOFktmFhU
+    id: ROW-2uad2hvRXmTZFlxeqvqBa
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-Bvm0ER4DR9R8Ka-rPsq25
+    type: ROW
+  ROW-5pZ9jSmd4v6TjvmeUez9J:
+    children:
+    - MARKDOWN-b3_B7dN4ueCX_iT5RAqvQ
+    id: ROW-5pZ9jSmd4v6TjvmeUez9J
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-AsMaxdYL_t
+    type: ROW
+  ROW-9SZLltEk3ckxj01CG6yiB:
+    children:
+    - COLUMN-2rBHSzf7slxEnVeiWwtX3
+    - CHART-oYL7TIQoRRCkuyG91I7CE
+    id: ROW-9SZLltEk3ckxj01CG6yiB
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-Bvm0ER4DR9R8Ka-rPsq25
+    type: ROW
+  ROW-COVERAGE-GEOJSON:
+    children:
+    - CHART-COVERAGE-GEOJSON
+    id: ROW-COVERAGE-GEOJSON
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-l_9I0aNYZ
+    type: ROW
+  ROW-QIIuRE3anXv0bG9PiZGNo:
+    children:
+    - CHART-Q3pbwsH3id
+    id: ROW-QIIuRE3anXv0bG9PiZGNo
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-Bvm0ER4DR9R8Ka-rPsq25
+    - ROW-9SZLltEk3ckxj01CG6yiB
+    - COLUMN-2rBHSzf7slxEnVeiWwtX3
+    type: ROW
+  ROW-TOWER-MAIN:
+    children:
+    - COLUMN-TOWER-STATS
+    - CHART-TOWER-MAP
+    id: ROW-TOWER-MAIN
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-YT6eNksV-
+    type: ROW
+  ROW-WN9A7D9_BC-at-i5LJ_d5:
+    children:
+    - MARKDOWN-3xNBR5FTWrm6fg_MlB3jT
+    id: ROW-WN9A7D9_BC-at-i5LJ_d5
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-AsMaxdYL_t
+    - ROW-y-GwJPgxLr
+    - COLUMN-kybTuvfQYFjh1dlTtuTOp
+    type: ROW
+  ROW-fbNlpi9Rvz42KFaYJJ_8t:
+    children:
+    - CHART-b5awP81W21t-JmvaMdf5p
+    - CHART-2CcfG3DHbCqIGz4V5p0FD
+    - CHART-Cdx0zVYlRJfhSanKFWGHB
+    - CHART-IH9R-GxH9MQFtMDCAXJaC
+    - CHART-9ObH5NrD9yUB1qdh6bNac
+    id: ROW-fbNlpi9Rvz42KFaYJJ_8t
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-AsMaxdYL_t
+    type: ROW
+  ROW-ftdKnWiM-22XP-9KDY6ID:
+    children:
+    - MARKDOWN-BjHlOooefas8VBvVfxIB4
+    id: ROW-ftdKnWiM-22XP-9KDY6ID
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-YT6eNksV-
+    type: ROW
+  ROW-y-GwJPgxLr:
+    children:
+    - MARKDOWN-__u6CsUyfh
+    - COLUMN-kybTuvfQYFjh1dlTtuTOp
+    - COLUMN-OnpvP8mx1r6Xx8BraWmaf
+    id: ROW-y-GwJPgxLr
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    - TAB-AsMaxdYL_t
+    type: ROW
+  TAB-AsMaxdYL_t:
+    children:
+    - ROW-y-GwJPgxLr
+    - ROW-fbNlpi9Rvz42KFaYJJ_8t
+    - ROW-5pZ9jSmd4v6TjvmeUez9J
+    id: TAB-AsMaxdYL_t
+    meta:
+      text: Overview
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    type: TAB
+  TAB-Bvm0ER4DR9R8Ka-rPsq25:
+    children:
+    - ROW-9SZLltEk3ckxj01CG6yiB
+    - ROW-2uad2hvRXmTZFlxeqvqBa
+    id: TAB-Bvm0ER4DR9R8Ka-rPsq25
+    meta:
+      defaultText: Tab title
+      placeholder: Tab title
+      text: Schools
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    type: TAB
+  TAB-YT6eNksV-:
+    children:
+    - ROW-TOWER-MAIN
+    - ROW-ftdKnWiM-22XP-9KDY6ID
+    id: TAB-YT6eNksV-
+    meta:
+      text: Cell Towers
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    type: TAB
+  TAB-l_9I0aNYZ:
+    children:
+    - ROW-COVERAGE-GEOJSON
+    id: TAB-l_9I0aNYZ
+    meta:
+      text: 4G Coverage Estimation
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-L-d9eyOE-b
+    type: TAB
+  TABS-L-d9eyOE-b:
+    children:
+    - TAB-AsMaxdYL_t
+    - TAB-Bvm0ER4DR9R8Ka-rPsq25
+    - TAB-YT6eNksV-
+    - TAB-l_9I0aNYZ
+    id: TABS-L-d9eyOE-b
+    meta: {}
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: TABS
+metadata:
+  timed_refresh_immune_slices: []
+  expanded_slices: {}
+  refresh_frequency: 0
+  color_scheme: ''
+  label_colors:
+    '0': '#FCC700'
+    '1': '#A868B7'
+    '15': '#3CCCCB'
+    '30': '#A38F79'
+    '45': '#8FD3E4'
+    age: '#1FA8C9'
+    Yes,: '#1FA8C9'
+    Female: '#454E7C'
+    Prefer: '#5AC189'
+    No,: '#FF7F44'
+    Male: '#666666'
+    Prefer not to say: '#E04355'
+    Ph.D.: '#FCC700'
+    associate's degree: '#A868B7'
+    bachelor's degree: '#3CCCCB'
+    high school diploma or equivalent (GED): '#A38F79'
+    master's degree (non-professional): '#8FD3E4'
+    no high school (secondary school): '#A1A6BD'
+    professional degree (MBA, MD, JD, etc.): '#ACE1C4'
+    some college credit, no degree: '#FEC0A1'
+    some high school: '#B2B2B2'
+    trade, technical, or vocational training: '#EFA1AA'
+    No, not an ethnic minority: '#1FA8C9'
+    Yes, an ethnic minority: '#454E7C'
+    <NULL>: '#5AC189'
+    'Yes': '#FF7F44'
+    'No': '#666666'
+    last_yr_income: '#E04355'
+    More: '#A1A6BD'
+    Less: '#ACE1C4'
+    I: '#FEC0A1'
+    expected_earn: '#B2B2B2'
+    'Yes: Willing To': '#EFA1AA'
+    'No: Not Willing to': '#FDE380'
+    No Answer: '#D3B3DA'
+    In an Office (with Other Developers): '#9EE5E5'
+    No Preference: '#D1C6BC'
+    From Home: '#1FA8C9'
+  cross_filters_enabled: true
+  chart_configuration:
+    '124':
+      id: 124
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 130
+        - 135
+        - 141
+        - 142
+        - 143
+        - 145
+        - 146
+        - 147
+        - 150
+        - 151
+    '130':
+      id: 130
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 124
+        - 135
+        - 141
+        - 142
+        - 143
+        - 145
+        - 146
+        - 147
+        - 150
+        - 151
+    '135':
+      id: 135
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 124
+        - 130
+        - 141
+        - 142
+        - 143
+        - 145
+        - 146
+        - 147
+        - 150
+        - 151
+    '147':
+      id: 147
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 124
+        - 130
+        - 135
+        - 141
+        - 142
+        - 143
+        - 145
+        - 146
+        - 150
+        - 151
+    '151':
+      id: 151
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 124
+        - 130
+        - 135
+        - 141
+        - 142
+        - 143
+        - 145
+        - 146
+        - 147
+        - 150
+  global_chart_configuration:
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded: []
+    chartsInScope:
+    - 124
+    - 130
+    - 135
+    - 141
+    - 142
+    - 143
+    - 145
+    - 146
+    - 147
+    - 150
+    - 151
+  filter_bar_orientation: VERTICAL
+  native_filter_configuration: []
+  default_filters: '{}'
+  color_scheme_domain: []
+  shared_label_colors:
+  - GSM
+  - LTE
+  - UMTS
+  map_label_colors:
+    ON GRID: '#5AC189'
+    OFF GRID: '#E04355'
+    None: '#c23531'
+    3G: '#2f4554'
+    4G: '#61a0a8'
+    3.5G: '#d48265'
+    fibre: '#91c7ae'
+    No - Not Covered: '#E04355'
+    Yes - Covered: '#5AC189'
+    GSM: '#1FA8C9'
+    UMTS: '#454E7C'
+    LTE: '#5AC189'
+theme_uuid: null
+version: 1.0.0

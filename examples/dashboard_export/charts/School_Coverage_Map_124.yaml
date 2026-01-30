@@ -1,0 +1,74 @@
+slice_name: School Coverage Map
+description: null
+certified_by: null
+certification_details: null
+viz_type: deck_scatter
+params:
+  datasource: 26__table
+  viz_type: deck_scatter
+  slice_id: 124
+  spatial:
+    type: latlong
+    latCol: latitude
+    lonCol: longitude
+  row_limit: 10000
+  filter_nulls: true
+  adhoc_filters: []
+  mapbox_style: mapbox://styles/mapbox/light-v9
+  autozoom: true
+  viewport:
+    bearing: 0
+    latitude: 31.222656842808707
+    longitude: 6.85236157047845
+    pitch: 0
+    zoom: 1
+  point_radius_fixed:
+    type: fix
+    value: '10000'
+  point_unit: radius_m
+  min_radius: 1
+  max_radius: 3
+  multiplier: 1
+  legend_position: tl
+  legend_format: SMART_NUMBER
+  color_scheme_type: categorical_palette
+  color_picker:
+    r: 0
+    g: 122
+    b: 135
+    a: 1
+  dimension: coverage_status
+  color_scheme: CustomScheme
+  deafult_breakpoint_color:
+    r: 158
+    g: 158
+    b: 158
+    a: 1
+  js_columns:
+  - internet_availability
+  - education_level
+  - electricity_availability
+  - connectivity_type
+  js_data_mutator: ''
+  js_tooltip: "function(object) {\n  if (!object || !object.object) return null;\n\
+    \  \n  const d = object.object.extraProps;\n  \n  return '<div style=\"font-family:\
+    \ Helvetica, sans-serif;\"><div>Education Level: <b>' + (d.education_level ||\
+    \ 'N/A') + '</b></div><div>Electricity Availability: <b>' + (d.electricity_availability\
+    \ || 'N/A') + '</b></div><div>Internet Availability: <b>' + (d.internet_availability\
+    \ || 'N/A') + '</b></div></div>';\n}"
+  js_onclick_href: ''
+  time_grain_sqla: null
+  granularity: null
+  extra_form_data: {}
+  dashboards:
+  - 13
+query_context: '{"datasource":{"id":26,"type":"table"},"force":false,"queries":[{"filters":[],"extras":{"time_grain_sqla":null,"having":"","where":""},"applied_time_extras":{},"columns":[],"metrics":[],"annotation_layers":[],"row_limit":10000,"series_limit":0,"group_others_when_limit_reached":false,"order_desc":true,"url_params":{},"custom_params":{},"custom_form_data":{}}],"form_data":{"datasource":"26__table","viz_type":"deck_scatter","slice_id":124,"spatial":{"type":"latlong","latCol":"latitude","lonCol":"longitude"},"row_limit":10000,"filter_nulls":true,"adhoc_filters":[],"mapbox_style":"mapbox://styles/mapbox/light-v9","autozoom":true,"viewport":{"bearing":0,"latitude":31.222656842808707,"longitude":6.85236157047845,"pitch":0,"zoom":1},"point_radius_fixed":{"type":"fix","value":"10000"},"point_unit":"radius_m","min_radius":1,"max_radius":3,"multiplier":1,"legend_position":"tl","legend_format":"SMART_NUMBER","color_scheme_type":"categorical_palette","color_picker":{"r":0,"g":122,"b":135,"a":1},"dimension":"fourg","color_scheme":"CustomScheme","deafult_breakpoint_color":{"r":158,"g":158,"b":158,"a":1},"js_columns":["internet_availability","education_level","electricity_availability","connectivity_type"],"js_data_mutator":"","js_tooltip":"function(object)
+  {\n  if (!object || !object.object) return null;\n  \n  const d = object.object.extraProps;\n  \n  return
+  ''<div style=\"font-family: Helvetica, sans-serif;\"><div>Education Level: <b>''
+  + (d.education_level || ''N/A'') + ''</b></div><div>Electricity Availability: <b>''
+  + (d.electricity_availability || ''N/A'') + ''</b></div><div>Internet Availability:
+  <b>'' + (d.internet_availability || ''N/A'') + ''</b></div></div>'';\n}","js_onclick_href":"","time_grain_sqla":null,"granularity":null,"extra_form_data":{},"dashboards":[13],"force":false,"result_format":"json","result_type":"full"},"result_format":"json","result_type":"full"}'
+cache_timeout: null
+uuid: a7e3f4d1-b458-4f44-8504-59baf929af93
+version: 1.0.0
+dataset_uuid: a1eadc46-5f34-40b2-9824-21c6b2418a4e

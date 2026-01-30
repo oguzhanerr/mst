@@ -1,0 +1,32 @@
+slice_name: 'KPI: LTE Towers'
+description: null
+certified_by: null
+certification_details: null
+viz_type: big_number_total
+params:
+  datasource: 27__table
+  viz_type: big_number_total
+  slice_id: 146
+  metric:
+    expressionType: SQL
+    label: LTE Count
+    sqlExpression: SUM(CASE WHEN radio_type = 'LTE' THEN 1 ELSE 0 END)
+  adhoc_filters: []
+  header_font_size: 0.3
+  subtitle: 4G LTE Towers
+  subtitle_font_size: 0.125
+  y_axis_format: SMART_NUMBER
+  time_format: smart_date
+  conditional_formatting: []
+  extra_form_data: {}
+  dashboards:
+  - 14
+  - 13
+query_context: '{"datasource":{"id":27,"type":"table"},"force":false,"queries":[{"filters":[],"extras":{"having":"","where":""},"applied_time_extras":{},"columns":[],"metrics":[{"expressionType":"SQL","label":"LTE
+  Count","sqlExpression":"SUM(CASE WHEN radio_type = ''LTE'' THEN 1 ELSE 0 END)"}],"annotation_layers":[],"series_limit":0,"group_others_when_limit_reached":false,"order_desc":true,"url_params":{},"custom_params":{},"custom_form_data":{}}],"form_data":{"datasource":"27__table","viz_type":"big_number_total","slice_id":146,"metric":{"expressionType":"SQL","label":"LTE
+  Count","sqlExpression":"SUM(CASE WHEN radio_type = ''LTE'' THEN 1 ELSE 0 END)"},"adhoc_filters":[],"header_font_size":0.3,"subtitle":"4G
+  LTE Towers","subtitle_font_size":0.125,"y_axis_format":"SMART_NUMBER","time_format":"smart_date","conditional_formatting":[],"extra_form_data":{},"dashboards":[14,13],"force":false,"result_format":"json","result_type":"full"},"result_format":"json","result_type":"full"}'
+cache_timeout: null
+uuid: 269fb774-8cf9-440c-a6f7-12356ce3ef3e
+version: 1.0.0
+dataset_uuid: ff45c6d9-5518-4202-a28c-531d7e563c86

@@ -1,0 +1,35 @@
+slice_name: 4G Coverage Polygons
+description: null
+certified_by: null
+certification_details: null
+viz_type: deck_geojson
+params:
+  datasource: 31__table
+  viz_type: deck_geojson
+  geojson: geojson
+  row_limit: 2894
+  fill_color_picker:
+    r: 90
+    g: 193
+    b: 137
+    a: 0.5
+  stroke_color_picker:
+    r: 0
+    g: 100
+    b: 100
+    a: 1
+  stroke_width: 1
+  filled: true
+  stroked: true
+  extruded: false
+  mapbox_style: mapbox://styles/mapbox/light-v9
+  viewport:
+    longitude: 29.8
+    latitude: -2.0
+    zoom: 8
+  autozoom: true
+query_context: '{"datasource":{"id":30,"type":"table"},"force":false,"queries":[{"filters":[],"extras":{"having":"","where":""},"applied_time_extras":{},"columns":[],"metrics":[],"annotation_layers":[],"row_limit":5000,"series_limit":0,"group_others_when_limit_reached":false,"order_desc":true,"url_params":{},"custom_params":{},"custom_form_data":{}}],"form_data":{"autozoom":true,"cache_timeout":86400,"datasource":"30__table","extruded":false,"fill_color_picker":{"a":0.6,"b":137,"g":193,"r":90},"filled":true,"geojson_column":"geojson","legend_position":"tr","mapbox_style":"mapbox://styles/mapbox/light-v9","row_limit":5000,"slice_id":155,"stroke_color_picker":{"a":1,"b":135,"g":122,"r":0},"stroke_width":1,"stroked":true,"viewport":{"latitude":-2,"longitude":29.8,"zoom":7},"viz_type":"deck_geojson","force":false,"result_format":"json","result_type":"full"},"result_format":"json","result_type":"full"}'
+cache_timeout: 86400
+uuid: 92908050-73c2-46b7-a6a8-eaa97e595bed
+version: 1.0.0
+dataset_uuid: 5a6190bd-94ec-40aa-8daa-4340f2b1fdff
