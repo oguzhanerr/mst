@@ -25,3 +25,7 @@ env/.metadata.env
 *.tfstate
 *.tfstate.backup
 .terraform/
+
+# Backups
+backups/
+*.sql.gz
