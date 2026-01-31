@@ -1,0 +1,121 @@
+table_name: dashboard_summary_stats
+main_dttm_col: null
+description: null
+default_endpoint: null
+offset: 0
+cache_timeout: null
+catalog: giga_mst
+schema: public
+sql: SELECT (SELECT COUNT(*) FROM school) AS total_schools, (SELECT COUNT(*) FROM
+  school WHERE fourg) AS schools_with_4g, (SELECT COUNT(*) FROM school WHERE NOT fourg
+  AND NOT threeg AND NOT twog) AS schools_no_coverage, (SELECT ROUND(100.0 * SUM(CASE
+  WHEN fourg THEN 1 ELSE 0 END) / COUNT(*), 1) FROM school) AS coverage_rate, (SELECT
+  COUNT(*) FROM celltower) AS total_towers, (SELECT COUNT(*) FROM celltower WHERE
+  radio_type = 'LTE') AS lte_towers, (SELECT ROUND(AVG(fiber_node_distance)::numeric,
+  1) FROM school) AS avg_fiber_distance
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+folders: null
+uuid: 5cb4a59f-f5b7-44f2-ae44-a0ba68bc9bca
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: schools_with_4g
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: avg_fiber_distance
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: coverage_rate
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: schools_no_coverage
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: total_schools
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: total_towers
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: lte_towers
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 6e21539e-c3f4-4229-be35-5cacd23b206b

@@ -1,0 +1,58 @@
+slice_name: Dynamic Insights Summary
+description: null
+certified_by: null
+certification_details: null
+viz_type: handlebars
+params:
+  datasource: 28__table
+  viz_type: handlebars
+  slice_id: 169
+  query_mode: raw
+  groupby: []
+  all_columns:
+  - total_schools
+  - schools_with_4g
+  - schools_no_coverage
+  - coverage_rate
+  - total_towers
+  - lte_towers
+  - avg_fiber_distance
+  percent_metrics: []
+  order_by_cols: []
+  order_desc: true
+  row_limit: 5000
+  adhoc_filters: []
+  handlebarsTemplate: "<div style=\"padding:20px;font-family:sans-serif;\"><h2>\U0001F4CA\
+    \ Rwanda School Connectivity</h2><hr/>{{#each data}}<h3>Coverage</h3><ul><li><b>{{coverage_rate}}%</b>\
+    \ 4G coverage ({{schools_with_4g}}/{{total_schools}})</li><li style=\"color:red\"\
+    ><b>{{schools_no_coverage}}</b> schools without coverage</li><li>Avg fiber distance:\
+    \ <b>{{avg_fiber_distance}} km</b></li></ul><h3>Infrastructure</h3><ul><li><b>{{total_towers}}</b>\
+    \ cell towers</li><li><b>{{lte_towers}}</b> LTE towers</li></ul>{{/each}}<hr/><small>\U0001F504\
+    \ Live data</small></div>"
+  extra_form_data: {}
+  dashboards:
+  - 12
+query_context: "{\"datasource\":{\"id\":28,\"type\":\"table\"},\"force\":false,\"\
+  queries\":[{\"filters\":[],\"extras\":{\"having\":\"\",\"where\":\"\"},\"applied_time_extras\"\
+  :{},\"columns\":[\"total_schools\",\"schools_with_4g\",\"schools_no_coverage\",\"\
+  coverage_rate\",\"total_towers\",\"lte_towers\",\"avg_fiber_distance\"],\"annotation_layers\"\
+  :[],\"row_limit\":5000,\"series_limit\":0,\"group_others_when_limit_reached\":false,\"\
+  order_desc\":true,\"url_params\":{},\"custom_params\":{},\"custom_form_data\":{}}],\"\
+  form_data\":{\"datasource\":\"28__table\",\"viz_type\":\"handlebars\",\"slice_id\"\
+  :169,\"query_mode\":\"raw\",\"groupby\":[],\"all_columns\":[\"total_schools\",\"\
+  schools_with_4g\",\"schools_no_coverage\",\"coverage_rate\",\"total_towers\",\"\
+  lte_towers\",\"avg_fiber_distance\"],\"percent_metrics\":[],\"order_by_cols\":[],\"\
+  order_desc\":true,\"row_limit\":5000,\"adhoc_filters\":[],\"handlebarsTemplate\"\
+  :\"<div style=\\\"padding:20px;font-family:sans-serif;\\\"><h2>\U0001F4CA Rwanda\
+  \ School Connectivity</h2><hr/>{{#each data}}<h3>Coverage</h3><ul><li><b>{{coverage_rate}}%</b>\
+  \ 4G coverage ({{schools_with_4g}}/{{total_schools}})</li><li style=\\\"color:red\\\
+  \"><b>{{schools_no_coverage}}</b> schools without coverage</li><li>Avg fiber distance:\
+  \ <b>{{avg_fiber_distance}} km</b></li></ul><h3>Infrastructure</h3><ul><li><b>{{total_towers}}</b>\
+  \ cell towers</li><li><b>{{lte_towers}}</b> LTE towers</li></ul>{{/each}}<hr/><small>\U0001F504\
+  \ Live data</small></div>\",\"extra_form_data\":{},\"dashboards\":[12],\"force\"\
+  :false,\"result_format\":\"json\",\"result_type\":\"full\"},\"result_format\":\"\
+  json\",\"result_type\":\"full\"}"
+cache_timeout: null
+uuid: 85397100-3651-4477-97ed-89654d521b0e
+version: 1.0.0
+dataset_uuid: 5cb4a59f-f5b7-44f2-ae44-a0ba68bc9bca

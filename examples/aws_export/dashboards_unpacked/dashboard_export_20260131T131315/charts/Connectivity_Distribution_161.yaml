@@ -1,0 +1,101 @@
+slice_name: Connectivity Distribution
+description: null
+certified_by: null
+certification_details: null
+viz_type: pie
+params:
+  datasource: 26__table
+  viz_type: pie
+  slice_id: 389
+  groupby:
+  - connectivity_type
+  metric:
+    aggregate: COUNT
+    column:
+      advanced_data_type: null
+      changed_on: '2026-01-28T14:45:57.846884'
+      column_name: connectivity_type
+      created_on: '2026-01-28T14:45:57.846883'
+      description: null
+      expression: null
+      extra: null
+      filterable: true
+      groupby: true
+      id: 777
+      is_active: true
+      is_dttm: false
+      python_date_format: null
+      type: VARCHAR(255)
+      type_generic: 1
+      uuid: 92440960-6f96-4f6d-bf43-f451802c4828
+      verbose_name: null
+    datasourceWarning: false
+    expressionType: SIMPLE
+    hasCustomLabel: false
+    label: COUNT(connectivity_type)
+    optionName: metric_nf7nqklbkk_1325ce041ko
+    sqlExpression: null
+  adhoc_filters: []
+  row_limit: 10000
+  sort_by_metric: true
+  color_scheme: echarts4Colors
+  show_labels_threshold: 5
+  roseType: null
+  show_legend: true
+  legendType: scroll
+  legendOrientation: right
+  label_type: key
+  number_format: SMART_NUMBER
+  date_format: smart_date
+  show_labels: true
+  labels_outside: true
+  label_line: true
+  show_total: true
+  outerRadius: 69
+  donut: true
+  innerRadius: 47
+  extra_form_data: {}
+  dashboards:
+  - 12
+  annotation_layers: []
+query_context: '{"datasource": {"id": 26, "type": "table"}, "force": false, "queries":
+  [{"filters": [], "extras": {"having": "", "where": ""}, "applied_time_extras": {},
+  "columns": ["connectivity_type"], "metrics": [{"aggregate": "COUNT", "column": {"advanced_data_type":
+  null, "changed_on": "2026-01-28T14:45:57.846884", "column_name": "connectivity_type",
+  "created_on": "2026-01-28T14:45:57.846883", "description": null, "expression": null,
+  "extra": null, "filterable": true, "groupby": true, "id": 777, "is_active": true,
+  "is_dttm": false, "python_date_format": null, "type": "VARCHAR(255)", "type_generic":
+  1, "uuid": "92440960-6f96-4f6d-bf43-f451802c4828", "verbose_name": null}, "datasourceWarning":
+  false, "expressionType": "SIMPLE", "hasCustomLabel": false, "label": "COUNT(connectivity_type)",
+  "optionName": "metric_nf7nqklbkk_1325ce041ko", "sqlExpression": null}], "orderby":
+  [[{"aggregate": "COUNT", "column": {"advanced_data_type": null, "changed_on": "2026-01-28T14:45:57.846884",
+  "column_name": "connectivity_type", "created_on": "2026-01-28T14:45:57.846883",
+  "description": null, "expression": null, "extra": null, "filterable": true, "groupby":
+  true, "id": 777, "is_active": true, "is_dttm": false, "python_date_format": null,
+  "type": "VARCHAR(255)", "type_generic": 1, "uuid": "92440960-6f96-4f6d-bf43-f451802c4828",
+  "verbose_name": null}, "datasourceWarning": false, "expressionType": "SIMPLE", "hasCustomLabel":
+  false, "label": "COUNT(connectivity_type)", "optionName": "metric_nf7nqklbkk_1325ce041ko",
+  "sqlExpression": null}, false]], "annotation_layers": [], "row_limit": 10000, "series_limit":
+  0, "group_others_when_limit_reached": false, "order_desc": true, "url_params": {},
+  "custom_params": {}, "custom_form_data": {}, "post_processing": [{"operation": "contribution",
+  "options": {"columns": ["COUNT(connectivity_type)"], "rename_columns": ["COUNT(connectivity_type)__contribution"]}}]}],
+  "form_data": {"datasource": "26__table", "viz_type": "pie", "slice_id": 389, "groupby":
+  ["connectivity_type"], "metric": {"aggregate": "COUNT", "column": {"advanced_data_type":
+  null, "changed_on": "2026-01-28T14:45:57.846884", "column_name": "connectivity_type",
+  "created_on": "2026-01-28T14:45:57.846883", "description": null, "expression": null,
+  "extra": null, "filterable": true, "groupby": true, "id": 777, "is_active": true,
+  "is_dttm": false, "python_date_format": null, "type": "VARCHAR(255)", "type_generic":
+  1, "uuid": "92440960-6f96-4f6d-bf43-f451802c4828", "verbose_name": null}, "datasourceWarning":
+  false, "expressionType": "SIMPLE", "hasCustomLabel": false, "label": "COUNT(connectivity_type)",
+  "optionName": "metric_nf7nqklbkk_1325ce041ko", "sqlExpression": null}, "adhoc_filters":
+  [], "row_limit": 10000, "sort_by_metric": true, "color_scheme": "echarts4Colors",
+  "show_labels_threshold": 5, "roseType": null, "show_legend": true, "legendType":
+  "scroll", "legendOrientation": "right", "label_type": "key", "number_format": "SMART_NUMBER",
+  "date_format": "smart_date", "show_labels": true, "labels_outside": true, "label_line":
+  true, "show_total": true, "outerRadius": 69, "donut": true, "innerRadius": 47, "extra_form_data":
+  {}, "dashboards": [12], "force": false, "result_format": "json", "result_type":
+  "full"}, "result_format": "json", "result_type": "full"}'
+cache_timeout: null
+uuid: 0a502934-c50c-4130-9104-25198bdfe50f
+version: 1.0.0
+dataset_uuid: a1eadc46-5f34-40b2-9824-21c6b2418a4e

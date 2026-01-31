@@ -1,0 +1,26 @@
+slice_name: World's Population
+description: null
+certified_by: null
+certification_details: null
+viz_type: big_number
+params:
+  compare_lag: '10'
+  compare_suffix: over 10Y
+  country_fieldtype: cca3
+  entity: country_code
+  granularity_sqla: year
+  groupby: []
+  limit: '25'
+  markup_type: markdown
+  metric: sum__SP_POP_TOTL
+  row_limit: 50000
+  show_bubbles: true
+  since: '2000'
+  time_range: '2014-01-01 : 2014-01-02'
+  until: '2014-01-02'
+  viz_type: big_number
+query_context: null
+cache_timeout: null
+uuid: f6f99746-a7a3-4bfa-8e31-237ad60b17f6
+version: 1.0.0
+dataset_uuid: 3dc3907c-bd32-4c95-b3af-4d0f13404cfc

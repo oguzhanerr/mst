@@ -1,0 +1,60 @@
+slice_name: Tower Distribution by Type
+description: null
+certified_by: null
+certification_details: null
+viz_type: pie
+params:
+  datasource: 27__table
+  viz_type: pie
+  slice_id: 147
+  groupby:
+  - radio_type
+  metric:
+    expressionType: SQL
+    label: count
+    sqlExpression: COUNT(*)
+  adhoc_filters: []
+  row_limit: 100
+  sort_by_metric: true
+  color_scheme: supersetColors
+  show_labels_threshold: 5
+  roseType: null
+  show_legend: true
+  legendType: plain
+  legendOrientation: right
+  label_type: key
+  number_format: SMART_NUMBER
+  date_format: smart_date
+  show_labels: true
+  labels_outside: true
+  label_line: false
+  show_total: false
+  outerRadius: 71
+  donut: false
+  extra_form_data: {}
+  dashboards:
+  - 14
+  - 13
+  annotation_layers: []
+query_context: '{"datasource": {"id": 27, "type": "table"}, "force": false, "queries":
+  [{"filters": [], "extras": {"having": "", "where": ""}, "applied_time_extras": {},
+  "columns": ["radio_type"], "metrics": [{"expressionType": "SQL", "label": "count",
+  "sqlExpression": "COUNT(*)"}], "orderby": [[{"expressionType": "SQL", "label": "count",
+  "sqlExpression": "COUNT(*)"}, false]], "annotation_layers": [], "row_limit": 100,
+  "series_limit": 0, "group_others_when_limit_reached": false, "order_desc": true,
+  "url_params": {}, "custom_params": {}, "custom_form_data": {}, "post_processing":
+  [{"operation": "contribution", "options": {"columns": ["count"], "rename_columns":
+  ["count__contribution"]}}]}], "form_data": {"datasource": "27__table", "viz_type":
+  "pie", "slice_id": 147, "groupby": ["radio_type"], "metric": {"expressionType":
+  "SQL", "label": "count", "sqlExpression": "COUNT(*)"}, "adhoc_filters": [], "row_limit":
+  100, "sort_by_metric": true, "color_scheme": "supersetColors", "show_labels_threshold":
+  5, "roseType": null, "show_legend": true, "legendType": "plain", "legendOrientation":
+  "right", "label_type": "key", "number_format": "SMART_NUMBER", "date_format": "smart_date",
+  "show_labels": true, "labels_outside": true, "label_line": false, "show_total":
+  false, "outerRadius": 71, "donut": false, "extra_form_data": {}, "dashboards": [14,
+  13], "force": false, "result_format": "json", "result_type": "full"}, "result_format":
+  "json", "result_type": "full"}'
+cache_timeout: null
+uuid: 90c647fe-4653-4fad-80f6-6922f46bd693
+version: 1.0.0
+dataset_uuid: ff45c6d9-5518-4202-a28c-531d7e563c86

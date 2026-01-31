@@ -48,6 +48,7 @@ RUN pip install --no-cache-dir -r requirements.txt --upgrade pip
 COPY docker/superset-init.sh /docker/superset-init.sh
 COPY docker/superset-entrypoint.sh /docker/superset-entrypoint.sh
 COPY docker/superset-celery.sh /docker/superset-celery.sh
+COPY docker/local-init.sh /docker/local-init.sh
 
 # Change permissions to make docker scripts executable
 RUN chmod +x /docker/*.sh && \

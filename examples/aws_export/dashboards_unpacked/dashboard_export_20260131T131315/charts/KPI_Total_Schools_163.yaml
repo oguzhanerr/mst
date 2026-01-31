@@ -1,0 +1,40 @@
+slice_name: 'KPI: Total Schools'
+description: null
+certified_by: null
+certification_details: null
+viz_type: big_number_total
+params:
+  datasource: 26__table
+  viz_type: big_number_total
+  slice_id: 141
+  metric:
+    expressionType: SQL
+    label: COUNT(*)
+    sqlExpression: COUNT(*)
+  adhoc_filters: []
+  header_font_size: 0.3
+  subtitle: Total Schools
+  subtitle_font_size: 0.15
+  y_axis_format: SMART_NUMBER
+  time_format: smart_date
+  conditional_formatting: []
+  extra_form_data: {}
+  dashboards:
+  - 14
+  - 13
+  annotation_layers: []
+query_context: '{"datasource": {"id": 26, "type": "table"}, "force": false, "queries":
+  [{"filters": [], "extras": {"having": "", "where": ""}, "applied_time_extras": {},
+  "columns": [], "metrics": [{"expressionType": "SQL", "label": "COUNT(*)", "sqlExpression":
+  "COUNT(*)"}], "annotation_layers": [], "series_limit": 0, "group_others_when_limit_reached":
+  false, "order_desc": true, "url_params": {}, "custom_params": {}, "custom_form_data":
+  {}}], "form_data": {"datasource": "26__table", "viz_type": "big_number_total", "slice_id":
+  141, "metric": {"expressionType": "SQL", "label": "COUNT(*)", "sqlExpression": "COUNT(*)"},
+  "adhoc_filters": [], "header_font_size": 0.3, "subtitle": "Total Schools", "subtitle_font_size":
+  0.15, "y_axis_format": "SMART_NUMBER", "time_format": "smart_date", "conditional_formatting":
+  [], "extra_form_data": {}, "dashboards": [14, 13], "force": false, "result_format":
+  "json", "result_type": "full"}, "result_format": "json", "result_type": "full"}'
+cache_timeout: null
+uuid: 1049f044-8731-476a-abd1-8a5125fe6ca1
+version: 1.0.0
+dataset_uuid: a1eadc46-5f34-40b2-9824-21c6b2418a4e

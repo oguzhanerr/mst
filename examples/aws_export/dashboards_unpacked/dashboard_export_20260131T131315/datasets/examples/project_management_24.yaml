@@ -1,0 +1,157 @@
+table_name: project_management
+main_dttm_col: start_time
+description: null
+default_endpoint: null
+offset: 0
+cache_timeout: null
+catalog: examples
+schema: public
+sql: "SELECT\n  1718870400000 AS start_time,\n  1718874000000 AS end_time,\n  'Project\
+  \ Alpha' AS project,\n  'Design Phase' AS phase,\n  'Initial design and architecture\
+  \ planning for Alpha.' AS description,\n  'Completed' AS status,\n  'High' AS priority\n\
+  UNION ALL\nSELECT\n    1718872800000,\n    1718877200000,\n    'Project Alpha',\n\
+  \    'Development Phase',\n    'Core feature development for Alpha project.',\n\
+  \    'In Progress',\n    'High'\nUNION ALL\nSELECT\n    1718876400000,\n    1718880000000,\n\
+  \    'Project Alpha',\n    'Testing Phase',\n    'Internal testing and bug fixing\
+  \ for Alpha features.',\n    'Planned',\n    'Medium'\nUNION ALL\nSELECT\n    1718878800000,\n\
+  \    1718882400000,\n    'Project Alpha',\n    'Deployment Phase',\n    'Preparation\
+  \ and execution of Alpha deployment.',\n    'On Hold',\n    'High'\nUNION ALL\n\
+  SELECT\n    1718880000000,\n    1718883600000,\n    'Project Beta',\n    'Design\
+  \ Phase',\n    'Gathering requirements and conceptual design for Beta.',\n    'Completed',\n\
+  \    'Medium'\nUNION ALL\nSELECT\n    1718882400000,\n    1718886000000,\n    'Project\
+  \ Beta',\n    'Development Phase',\n    'Module-wise development for Beta project.',\n\
+  \    'In Progress',\n    'Medium'\nUNION ALL\nSELECT\n    1718884800000,\n    1718888400000,\n\
+  \    'Project Beta',\n    'Testing Phase',\n    'User acceptance testing for Beta\
+  \ release.',\n    'Planned',\n    'High'\nUNION ALL\nSELECT\n    1718887200000,\n\
+  \    1718890800000,\n    'Project Beta',\n    'Deployment Phase',\n    'Final checks\
+  \ and release of Beta version.',\n    'Planned',\n    'Medium'\nUNION ALL\nSELECT\n\
+  \    1718889600000,\n    1718893200000,\n    'Project Gamma',\n    'Design Phase',\n\
+  \    'System design and database schema for Gamma.',\n    'Completed',\n    'Low'\n\
+  UNION ALL\nSELECT\n    1718892000000,\n    1718895600000,\n    'Project Gamma',\n\
+  \    'Development Phase',\n    'Backend API and frontend integration for Gamma.',\n\
+  \    'In Progress',\n    'High'\nUNION ALL\nSELECT\n    1718894400000,\n    1718898000000,\n\
+  \    'Project Gamma',\n    'Testing Phase',\n    'Automated test suite execution\
+  \ for Gamma.',\n    'Planned',\n    'Medium'\nUNION ALL\nSELECT\n    1718896800000,\n\
+  \    1718900400000,\n    'Project Gamma',\n    'Deployment Phase',\n    'Handover\
+  \ and post-deployment support for Gamma.',\n    'Planned',\n    'Low'\nUNION ALL\n\
+  SELECT\n    1718900000000,\n    1718904000000,\n    'Project Alpha',\n    'Risk\
+  \ Assessment',\n    'Analyzing potential risks and mitigation strategies.',\n  \
+  \  'Completed',\n    'High'\nUNION ALL\nSELECT\n    1718902000000,\n    1718906000000,\n\
+  \    'Project Beta',\n    'Client Review',\n    'Review meeting with key stakeholders\
+  \ for Beta.',\n    'In Progress',\n    'High'\nUNION ALL\nSELECT\n    1718904000000,\n\
+  \    1718908000000,\n    'Project Gamma',\n    'Documentation',\n    'Creating technical\
+  \ and user documentation.',\n    'Planned',\n    'Low'\nUNION ALL\nSELECT\n    1718906000000,\n\
+  \    1718910000000,\n    'Project Alpha',\n    'Feature Implementation',\n    'Implementing\
+  \ new requested features for Alpha.',\n    'In Progress',\n    'High'\nUNION ALL\n\
+  SELECT\n    1718908000000,\n    1718912000000,\n    'Project Beta',\n    'User Acceptance\
+  \ Testing',\n    'Final UAT before production release.',\n    'Planned',\n    'High'\n\
+  UNION ALL\nSELECT\n    1718910000000,\n    1718914000000,\n    'Project Gamma',\n\
+  \    'Bug Fixing',\n    'Addressing critical bugs reported post-release.',\n   \
+  \ 'In Progress',\n    'Medium';"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+folders: null
+uuid: d638a239-f255-44fc-b0c1-c3f3b7f00ee0
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra:
+    warning_markdown: ''
+  warning_text: null
+columns:
+- column_name: start_time
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: end_time
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: phase
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: status
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: description
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: project
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: priority
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+version: 1.0.0
+database_uuid: a2dc77af-e654-49bb-b321-40f6b559a1ee
