@@ -212,8 +212,8 @@ jobs:
         run: |
           echo "Checking restart policies..."
           
-          # Check superset has restart policy
-          if grep -A3 'superset:' compose.yaml | grep -q 'restart:'; then
+          # Check superset has restart policy (search within service block)
+          if grep -A10 '^  superset:' compose.yaml | grep -q 'restart:'; then
             echo "✓ superset service has restart policy"
           else
             echo "✗ superset service should have restart policy"
