@@ -5,7 +5,7 @@ snowflake-sqlalchemy==1.7.7
 # Celery and Redis for async processing and messaging
 celery[redis]==5.6.2
 # Redis client library
-redis==5.0.8
+redis==7.1.0
 # WSGI HTTP server for running Superset (Web Server Gateway Interface (WSGI)
 gunicorn==24.1.1
 # Asynchronous worker library for concurrency
