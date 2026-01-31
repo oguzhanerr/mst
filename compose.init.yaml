@@ -40,6 +40,10 @@ services:
     container_name: superset_init
     env_file:
       - env/.superset.env
+    environment:
+      # Load Superset example dashboards/data for local development.
+      # The init script will drop a marker in /app/superset_home so this only happens once.
+      - SUPERSET_LOAD_EXAMPLES=1
     command: ["/docker/superset-init.sh"]
     volumes:
       - superset_home:/app/superset_home

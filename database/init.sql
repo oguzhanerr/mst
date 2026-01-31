@@ -1,12 +1,13 @@
-CREATE TABLE celltower (
+CREATE TABLE IF NOT EXISTS celltower (
   fid VARCHAR(255) PRIMARY KEY,
   radio_type VARCHAR(255),
   lon DOUBLE PRECISION,
   lat DOUBLE PRECISION
 );
-COPY celltower FROM '/docker-entrypoint-initdb.d/rwa_celltower.csv' DELIMITER ',' CSV HEADER;
+TRUNCATE celltower;
+\copy celltower FROM '/docker-entrypoint-initdb.d/rwa_celltower.csv' DELIMITER ',' CSV HEADER;
 
-CREATE TABLE school (
+CREATE TABLE IF NOT EXISTS school (
   giga_id_school VARCHAR(255) PRIMARY KEY,
   education_level VARCHAR(255),
   latitude DOUBLE PRECISION,
@@ -22,15 +23,16 @@ CREATE TABLE school (
   threeG BOOLEAN,
   fourG BOOLEAN
 );
+TRUNCATE school;
+\copy school FROM '/docker-entrypoint-initdb.d/rwa_school.csv' DELIMITER ',' CSV HEADER;
 
-COPY school FROM '/docker-entrypoint-initdb.d/rwa_school.csv' DELIMITER ',' CSV HEADER;
-
-CREATE TABLE coverage (
+CREATE TABLE IF NOT EXISTS coverage (
   WKT TEXT,
   fid VARCHAR(255) PRIMARY KEY,
   DN INT
 );
-COPY coverage FROM '/docker-entrypoint-initdb.d/coverage.csv' DELIMITER ',' CSV HEADER;
+TRUNCATE coverage;
+\copy coverage FROM '/docker-entrypoint-initdb.d/coverage.csv' DELIMITER ',' CSV HEADER;
 
 -- Enable PostGIS and create GeoJSON view for Superset visualization
 CREATE EXTENSION IF NOT EXISTS postgis;
@@ -41,13 +43,13 @@ UPDATE coverage SET geom = ST_Transform(ST_SetSRID(ST_GeomFromText(WKT), 3857), 
 CREATE INDEX IF NOT EXISTS idx_coverage_geom ON coverage USING GIST (geom);
 
 -- Base GeoJSON view (geometry only)
-CREATE VIEW coverage_geojson AS 
-SELECT fid, DN, ST_AsGeoJSON(ST_Transform(ST_SetSRID(ST_GeomFromText(WKT), 3857), 4326)) AS geojson 
+CREATE OR REPLACE VIEW coverage_geojson AS
+SELECT fid, DN, ST_AsGeoJSON(ST_Transform(ST_SetSRID(ST_GeomFromText(WKT), 3857), 4326)) AS geojson
 FROM coverage;
 
 -- GeoJSON Feature view for deck.gl visualization
-CREATE VIEW coverage_geojson_feature AS
-SELECT 
+CREATE OR REPLACE VIEW coverage_geojson_feature AS
+SELECT
     fid,
     dn,
     json_build_object(
@@ -58,8 +60,9 @@ SELECT
 FROM coverage;
 
 -- Materialized view for faster rendering (pre-computed)
+DROP MATERIALIZED VIEW IF EXISTS coverage_geojson_fast;
 CREATE MATERIALIZED VIEW coverage_geojson_fast AS
-SELECT 
+SELECT
     fid,
     dn,
     json_build_object(
@@ -70,7 +73,7 @@ SELECT
 FROM coverage;
 
 -- Index on materialized view for faster lookups
-CREATE INDEX idx_coverage_geojson_fast_fid ON coverage_geojson_fast (fid);
+CREATE INDEX IF NOT EXISTS idx_coverage_geojson_fast_fid ON coverage_geojson_fast (fid);
 
 -- Analyze for query optimization
 ANALYZE coverage_geojson_fast;

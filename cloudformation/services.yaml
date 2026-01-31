@@ -1,0 +1,513 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Services Stack for Giga MST - RDS, ElastiCache, ALB, and ECS Services'
+
+Parameters:
+  EnvironmentName:
+    Type: String
+    Default: giga-mst
+
+  # Optional: enable HTTPS by providing an ACM certificate ARN for your custom domain.
+  # Note: ACM certificates can't be issued for *.elb.amazonaws.com, so you need a real domain name.
+  AcmCertificateArn:
+    Type: String
+    Default: ""
+
+  # Secrets (pass ARNs from deploy script; avoids hardcoding the random Secrets Manager suffix)
+  DatabaseSecretArn:
+    Type: String
+    Default: ""
+
+  SupersetSecretArn:
+    Type: String
+    Default: ""
+
+  SupersetAdminSecretArn:
+    Type: String
+    Default: ""
+
+  MapboxSecretArn:
+    Type: String
+    Default: ""
+
+  SmtpSecretArn:
+    Type: String
+    Default: ""
+
+  SupersetImage:
+    Type: String
+    Default: 905418185488.dkr.ecr.eu-west-1.amazonaws.com/giga-mst/superset:latest
+
+  DatabaseImage:
+    Type: String
+    Default: 905418185488.dkr.ecr.eu-west-1.amazonaws.com/giga-mst/database:latest
+
+  DBInstanceClass:
+    Type: String
+    Default: db.t3.small
+
+  RedisNodeType:
+    Type: String
+    Default: cache.t3.micro
+
+Conditions:
+  UseHttps: !Not [!Equals [!Ref AcmCertificateArn, ""]]
+
+Resources:
+  # ===================
+  # RDS PostgreSQL (Metadata DB for Superset)
+  # ===================
+  MetadataDB:
+    Type: AWS::RDS::DBInstance
+    DeletionPolicy: Snapshot
+    Properties:
+      DBInstanceIdentifier: !Sub ${EnvironmentName}-metadata-db
+      DBName: superset
+      Engine: postgres
+      EngineVersion: '16.11'
+      DBInstanceClass: !Ref DBInstanceClass
+      AllocatedStorage: 20
+      StorageType: gp3
+      MasterUsername: !Sub '{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:username}}'
+      MasterUserPassword: !Sub '{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}'
+      DBSubnetGroupName:
+        Fn::ImportValue: !Sub ${EnvironmentName}-DBSubnetGroupName
+      VPCSecurityGroups:
+        - Fn::ImportValue: !Sub ${EnvironmentName}-DatabaseSecurityGroupId
+      PubliclyAccessible: false
+      BackupRetentionPeriod: 7
+      MultiAZ: false
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName}-metadata-db
+
+  # RDS PostgreSQL with PostGIS (Data DB)
+  DataDB:
+    Type: AWS::RDS::DBInstance
+    DeletionPolicy: Snapshot
+    Properties:
+      DBInstanceIdentifier: !Sub ${EnvironmentName}-data-db
+      DBName: giga_mst
+      Engine: postgres
+      EngineVersion: '16.11'
+      DBInstanceClass: !Ref DBInstanceClass
+      AllocatedStorage: 50
+      StorageType: gp3
+      MasterUsername: !Sub '{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:username}}'
+      MasterUserPassword: !Sub '{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}'
+      DBSubnetGroupName:
+        Fn::ImportValue: !Sub ${EnvironmentName}-DBSubnetGroupName
+      VPCSecurityGroups:
+        - Fn::ImportValue: !Sub ${EnvironmentName}-DatabaseSecurityGroupId
+      PubliclyAccessible: false
+      BackupRetentionPeriod: 7
+      MultiAZ: false
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName}-data-db
+
+  # ===================
+  # ElastiCache Redis
+  # ===================
+  RedisCluster:
+    Type: AWS::ElastiCache::CacheCluster
+    Properties:
+      ClusterName: !Sub ${EnvironmentName}-redis
+      Engine: redis
+      EngineVersion: '7.1'
+      CacheNodeType: !Ref RedisNodeType
+      NumCacheNodes: 1
+      CacheSubnetGroupName:
+        Fn::ImportValue: !Sub ${EnvironmentName}-CacheSubnetGroupName
+      VpcSecurityGroupIds:
+        - Fn::ImportValue: !Sub ${EnvironmentName}-RedisSecurityGroupId
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName}-redis
+
+  # ===================
+  # Application Load Balancer
+  # ===================
+  ApplicationLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: !Sub ${EnvironmentName}-alb
+      Type: application
+      Scheme: internet-facing
+      SecurityGroups:
+        - Fn::ImportValue: !Sub ${EnvironmentName}-ALBSecurityGroupId
+      Subnets:
+        - Fn::ImportValue: !Sub ${EnvironmentName}-PublicSubnet1Id
+        - Fn::ImportValue: !Sub ${EnvironmentName}-PublicSubnet2Id
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName}-alb
+
+  ALBTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: !Sub ${EnvironmentName}-superset-tg
+      Port: 8088
+      Protocol: HTTP
+      VpcId:
+        Fn::ImportValue: !Sub ${EnvironmentName}-VPCId
+      TargetType: ip
+      HealthCheckEnabled: true
+      HealthCheckPath: /health
+      HealthCheckProtocol: HTTP
+      HealthCheckIntervalSeconds: 30
+      HealthCheckTimeoutSeconds: 10
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 3
+      Matcher:
+        HttpCode: '200'
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName}-superset-tg
+
+  ALBListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref ApplicationLoadBalancer
+      Port: 80
+      Protocol: HTTP
+      DefaultActions:
+        - !If
+          - UseHttps
+          - Type: redirect
+            RedirectConfig:
+              Protocol: HTTPS
+              Port: '443'
+              StatusCode: HTTP_301
+          - Type: forward
+            TargetGroupArn: !Ref ALBTargetGroup
+
+  ALBListenerHttps:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Condition: UseHttps
+    Properties:
+      LoadBalancerArn: !Ref ApplicationLoadBalancer
+      Port: 443
+      Protocol: HTTPS
+      Certificates:
+        - CertificateArn: !Ref AcmCertificateArn
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref ALBTargetGroup
+
+  # ===================
+  # ECS Task Definitions
+  # ===================
+  SupersetTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    DependsOn:
+      - MetadataDB
+      - DataDB
+      - RedisCluster
+    Properties:
+      Family: !Sub ${EnvironmentName}-superset
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      Cpu: '1024'
+      Memory: '2048'
+      ExecutionRoleArn:
+        Fn::ImportValue: !Sub ${EnvironmentName}-ECSTaskExecutionRoleArn
+      TaskRoleArn:
+        Fn::ImportValue: !Sub ${EnvironmentName}-ECSTaskRoleArn
+      ContainerDefinitions:
+        - Name: superset
+          Image: !Ref SupersetImage
+          Essential: true
+          PortMappings:
+            - ContainerPort: 8088
+              Protocol: tcp
+          Environment:
+            - Name: SUPERSET_ENV
+              Value: production
+            - Name: SUPERSET_PUBLIC_URL
+              Value: !If
+                - UseHttps
+                - !Sub "https://${ApplicationLoadBalancer.DNSName}"
+                - !Sub "http://${ApplicationLoadBalancer.DNSName}"
+            - Name: SESSION_COOKIE_SECURE
+              Value: !If [UseHttps, "true", "false"]
+            - Name: REDIS_HOST
+              Value: !GetAtt RedisCluster.RedisEndpoint.Address
+            - Name: REDIS_PORT
+              Value: '6379'
+            - Name: DATABASE_HOST
+              Value: !GetAtt MetadataDB.Endpoint.Address
+            - Name: DATABASE_PORT
+              Value: '5432'
+            - Name: DATABASE_DB
+              Value: superset
+            - Name: POSTGIS_HOST
+              Value: !GetAtt DataDB.Endpoint.Address
+            - Name: POSTGIS_PORT
+              Value: '5432'
+            - Name: POSTGIS_DB
+              Value: giga_mst
+          Secrets:
+            - Name: DATABASE_USER
+              ValueFrom: !Sub "${DatabaseSecretArn}:username::"
+            - Name: DATABASE_PASSWORD
+              ValueFrom: !Sub "${DatabaseSecretArn}:password::"
+            - Name: SUPERSET_SECRET_KEY
+              ValueFrom: !Sub "${SupersetSecretArn}:secret_key::"
+            - Name: MAPBOX_API_KEY
+              ValueFrom: !Sub "${MapboxSecretArn}:api_key::"
+            - Name: SMTP_USER
+              ValueFrom: !Sub "${SmtpSecretArn}:username::"
+            - Name: SMTP_PASSWORD
+              ValueFrom: !Sub "${SmtpSecretArn}:password::"
+            # Admin login for setup (used by /docker/superset-init.sh)
+            - Name: SUPERSET_USER
+              ValueFrom: !Sub "${SupersetAdminSecretArn}:username::"
+            - Name: SUPERSET_PASSWORD
+              ValueFrom: !Sub "${SupersetAdminSecretArn}:password::"
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Fn::ImportValue: !Sub ${EnvironmentName}-LogGroupName
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: superset
+          HealthCheck:
+            Command:
+              - CMD-SHELL
+              - curl -f http://localhost:8088/health || exit 1
+            Interval: 30
+            Timeout: 10
+            Retries: 3
+            StartPeriod: 60
+
+  CeleryWorkerTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    DependsOn:
+      - MetadataDB
+      - DataDB
+      - RedisCluster
+    Properties:
+      Family: !Sub ${EnvironmentName}-celery-worker
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      Cpu: '512'
+      Memory: '1024'
+      ExecutionRoleArn:
+        Fn::ImportValue: !Sub ${EnvironmentName}-ECSTaskExecutionRoleArn
+      TaskRoleArn:
+        Fn::ImportValue: !Sub ${EnvironmentName}-ECSTaskRoleArn
+      ContainerDefinitions:
+        - Name: celery-worker
+          Image: !Ref SupersetImage
+          Essential: true
+          Command:
+            - celery
+            - '--app=superset.tasks.celery_app:app'
+            - worker
+            - '--pool=prefork'
+            - '-O'
+            - fair
+            - '-c'
+            - '2'
+          Environment:
+            - Name: SUPERSET_ENV
+              Value: production
+            - Name: SUPERSET_PUBLIC_URL
+              Value: !If
+                - UseHttps
+                - !Sub "https://${ApplicationLoadBalancer.DNSName}"
+                - !Sub "http://${ApplicationLoadBalancer.DNSName}"
+            - Name: SESSION_COOKIE_SECURE
+              Value: !If [UseHttps, "true", "false"]
+            - Name: REDIS_HOST
+              Value: !GetAtt RedisCluster.RedisEndpoint.Address
+            - Name: REDIS_PORT
+              Value: '6379'
+            - Name: DATABASE_HOST
+              Value: !GetAtt MetadataDB.Endpoint.Address
+            - Name: DATABASE_PORT
+              Value: '5432'
+            - Name: DATABASE_DB
+              Value: superset
+            - Name: POSTGIS_HOST
+              Value: !GetAtt DataDB.Endpoint.Address
+            - Name: POSTGIS_PORT
+              Value: '5432'
+            - Name: POSTGIS_DB
+              Value: giga_mst
+          Secrets:
+            - Name: DATABASE_USER
+              ValueFrom: !Sub "${DatabaseSecretArn}:username::"
+            - Name: DATABASE_PASSWORD
+              ValueFrom: !Sub "${DatabaseSecretArn}:password::"
+            - Name: SUPERSET_SECRET_KEY
+              ValueFrom: !Sub "${SupersetSecretArn}:secret_key::"
+            - Name: SMTP_USER
+              ValueFrom: !Sub "${SmtpSecretArn}:username::"
+            - Name: SMTP_PASSWORD
+              ValueFrom: !Sub "${SmtpSecretArn}:password::"
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Fn::ImportValue: !Sub ${EnvironmentName}-LogGroupName
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: celery-worker
+
+  CeleryBeatTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    DependsOn:
+      - MetadataDB
+      - RedisCluster
+    Properties:
+      Family: !Sub ${EnvironmentName}-celery-beat
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      Cpu: '256'
+      Memory: '512'
+      ExecutionRoleArn:
+        Fn::ImportValue: !Sub ${EnvironmentName}-ECSTaskExecutionRoleArn
+      TaskRoleArn:
+        Fn::ImportValue: !Sub ${EnvironmentName}-ECSTaskRoleArn
+      ContainerDefinitions:
+        - Name: celery-beat
+          Image: !Ref SupersetImage
+          Essential: true
+          Command:
+            - celery
+            - '--app=superset.tasks.celery_app:app'
+            - beat
+            - '--pidfile='
+            - '-s'
+            - /tmp/celerybeat-schedule
+          Environment:
+            - Name: SUPERSET_ENV
+              Value: production
+            - Name: SUPERSET_PUBLIC_URL
+              Value: !If
+                - UseHttps
+                - !Sub "https://${ApplicationLoadBalancer.DNSName}"
+                - !Sub "http://${ApplicationLoadBalancer.DNSName}"
+            - Name: SESSION_COOKIE_SECURE
+              Value: !If [UseHttps, "true", "false"]
+            - Name: REDIS_HOST
+              Value: !GetAtt RedisCluster.RedisEndpoint.Address
+            - Name: REDIS_PORT
+              Value: '6379'
+            - Name: DATABASE_HOST
+              Value: !GetAtt MetadataDB.Endpoint.Address
+            - Name: DATABASE_PORT
+              Value: '5432'
+            - Name: DATABASE_DB
+              Value: superset
+          Secrets:
+            - Name: DATABASE_USER
+              ValueFrom: !Sub "${DatabaseSecretArn}:username::"
+            - Name: DATABASE_PASSWORD
+              ValueFrom: !Sub "${DatabaseSecretArn}:password::"
+            - Name: SUPERSET_SECRET_KEY
+              ValueFrom: !Sub "${SupersetSecretArn}:secret_key::"
+            - Name: SMTP_USER
+              ValueFrom: !Sub "${SmtpSecretArn}:username::"
+            - Name: SMTP_PASSWORD
+              ValueFrom: !Sub "${SmtpSecretArn}:password::"
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Fn::ImportValue: !Sub ${EnvironmentName}-LogGroupName
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: celery-beat
+
+  # ===================
+  # ECS Services
+  # ===================
+  SupersetService:
+    Type: AWS::ECS::Service
+    DependsOn:
+      - ALBListener
+    Properties:
+      ServiceName: !Sub ${EnvironmentName}-superset
+      Cluster:
+        Fn::ImportValue: !Sub ${EnvironmentName}-ECSClusterName
+      TaskDefinition: !Ref SupersetTaskDefinition
+      DesiredCount: 1
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - Fn::ImportValue: !Sub ${EnvironmentName}-ECSSecurityGroupId
+          Subnets:
+            - Fn::ImportValue: !Sub ${EnvironmentName}-PrivateSubnet1Id
+            - Fn::ImportValue: !Sub ${EnvironmentName}-PrivateSubnet2Id
+      LoadBalancers:
+        - ContainerName: superset
+          ContainerPort: 8088
+          TargetGroupArn: !Ref ALBTargetGroup
+      HealthCheckGracePeriodSeconds: 120
+
+  CeleryWorkerService:
+    Type: AWS::ECS::Service
+    Properties:
+      ServiceName: !Sub ${EnvironmentName}-celery-worker
+      Cluster:
+        Fn::ImportValue: !Sub ${EnvironmentName}-ECSClusterName
+      TaskDefinition: !Ref CeleryWorkerTaskDefinition
+      DesiredCount: 1
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - Fn::ImportValue: !Sub ${EnvironmentName}-ECSSecurityGroupId
+          Subnets:
+            - Fn::ImportValue: !Sub ${EnvironmentName}-PrivateSubnet1Id
+            - Fn::ImportValue: !Sub ${EnvironmentName}-PrivateSubnet2Id
+
+  CeleryBeatService:
+    Type: AWS::ECS::Service
+    Properties:
+      ServiceName: !Sub ${EnvironmentName}-celery-beat
+      Cluster:
+        Fn::ImportValue: !Sub ${EnvironmentName}-ECSClusterName
+      TaskDefinition: !Ref CeleryBeatTaskDefinition
+      DesiredCount: 1
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - Fn::ImportValue: !Sub ${EnvironmentName}-ECSSecurityGroupId
+          Subnets:
+            - Fn::ImportValue: !Sub ${EnvironmentName}-PrivateSubnet1Id
+            - Fn::ImportValue: !Sub ${EnvironmentName}-PrivateSubnet2Id
+
+Outputs:
+  ALBDNSName:
+    Description: Application Load Balancer DNS Name
+    Value: !GetAtt ApplicationLoadBalancer.DNSName
+    Export:
+      Name: !Sub ${EnvironmentName}-ALBDNSName
+
+  SupersetURL:
+    Description: Superset Application URL
+    Value: !If
+      - UseHttps
+      - !Sub https://${ApplicationLoadBalancer.DNSName}
+      - !Sub http://${ApplicationLoadBalancer.DNSName}
+
+  MetadataDBEndpoint:
+    Description: Metadata Database Endpoint
+    Value: !GetAtt MetadataDB.Endpoint.Address
+
+  DataDBEndpoint:
+    Description: Data Database Endpoint
+    Value: !GetAtt DataDB.Endpoint.Address
+
+  RedisEndpoint:
+    Description: Redis Endpoint
+    Value: !GetAtt RedisCluster.RedisEndpoint.Address

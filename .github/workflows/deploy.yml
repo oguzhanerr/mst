@@ -16,7 +16,7 @@ on:
           - staging
 
 env:
-  AWS_REGION: us-east-1
+  AWS_REGION: eu-west-1
   ECR_REPOSITORY: giga-mst/superset
   ECS_CLUSTER: giga-mst-cluster
 

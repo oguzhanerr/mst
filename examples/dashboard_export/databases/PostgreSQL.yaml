@@ -1,5 +1,7 @@
 database_name: PostgreSQL
-sqlalchemy_uri: postgresql://postgres:XXXXXXXXXX@database:5432/mst
+# This URI is overwritten during AWS init via `superset set-database-uri`.
+# Keep it syntactically valid so imports succeed, but don't bake credentials/hostnames into the repo.
+sqlalchemy_uri: postgresql://postgres:postgres@localhost:5432/postgres
 cache_timeout: null
 expose_in_sqllab: true
 allow_run_async: false

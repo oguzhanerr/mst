@@ -83,6 +83,16 @@ brew install --cask docker
 
 ## Option 1: AWS ECS with Fargate (Recommended)
 
+Recommended approach (repo helper script):
+```bash
+./scripts/deploy-aws.sh full       # includes load-data
+./scripts/deploy-aws.sh init       # sets admin password + imports MST dashboards
+```
+
+Notes:
+- The script builds/pushes linux/amd64 images to avoid Apple Silicon -> Fargate "exec format error".
+- The init step skips `superset load_examples` by default; it imports the MST dashboard export instead.
+
 ### Step 1: Create ECR Repositories
 
 ```bash
@@ -116,6 +126,10 @@ docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/giga-mst/database:
 
 Use the provided CloudFormation template or create manually:
 
+Note on example data:
+- For AWS/prod deployments, the init script skips `superset load_examples` by default.
+- If you *do* want example dashboards/data (not recommended for prod), set `SUPERSET_LOAD_EXAMPLES=1` for the one-off init task.
+
 ```bash
 aws cloudformation create-stack \
   --stack-name giga-mst-vpc \
@@ -131,7 +145,7 @@ aws rds create-db-instance \
   --db-instance-identifier giga-mst-metadata \
   --db-instance-class db.t3.small \
   --engine postgres \
-  --engine-version 16.4 \
+  --engine-version 16.11 \
   --master-username superset \
   --master-user-password <secure-password> \
   --allocated-storage 20 \
@@ -144,7 +158,7 @@ aws rds create-db-instance \
   --db-instance-identifier giga-mst-data \
   --db-instance-class db.t3.medium \
   --engine postgres \
-  --engine-version 16.4 \
+  --engine-version 16.11 \
   --master-username postgres \
   --master-user-password <secure-password> \
   --allocated-storage 50 \
@@ -173,27 +187,20 @@ aws elasticache create-cache-cluster \
 
 ### Step 6: Store Secrets in AWS Secrets Manager
 
-```bash
-# Create secrets
-aws secretsmanager create-secret \
-  --name giga-mst/superset \
-  --secret-string '{
-    "SUPERSET_SECRET_KEY": "<generate-secure-key>",
-    "SUPERSET_USER": "admin",
-    "SUPERSET_PASSWORD": "<admin-password>",
-    "SUPERSET_META_USER": "superset",
-    "SUPERSET_META_PASS": "<metadata-db-password>",
-    "SMTP_USER": "<smtp-user>",
-    "SMTP_PASSWORD": "<smtp-password>",
-    "MAPBOX_API_KEY": "<mapbox-key>"
-  }'
+If you're using `./scripts/deploy-aws.sh`, you usually don't need to manually create secrets — the script creates them for you.
 
-aws secretsmanager create-secret \
-  --name giga-mst/database \
-  --secret-string '{
-    "POSTGRES_USER": "postgres",
-    "POSTGRES_PASSWORD": "<data-db-password>"
-  }'
+Secrets created/used by the script (default `STACK_NAME=giga-mst`):
+- `${STACK_NAME}/database` (JSON: `{"username": "...", "password": "..."}`) used for both RDS instances
+- `${STACK_NAME}/superset` (JSON: `{"secret_key": "..."}`)
+- `${STACK_NAME}/superset-admin` (JSON: `{"username": "admin", "password": "..."}`)
+- `${STACK_NAME}/mapbox` (JSON: `{"api_key": "..."}`)
+
+To set/update Mapbox for map visuals:
+```bash
+# Recommended: set env var in your shell, then run services (and deploy to restart tasks)
+export MAPBOX_API_KEY=<your-mapbox-api-key>
+./scripts/deploy-aws.sh services
+./scripts/deploy-aws.sh deploy
 ```
 
 ### Step 7: Create ECS Task Definitions

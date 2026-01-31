@@ -13,7 +13,13 @@ SECRET_KEY = os.getenv("SUPERSET_SECRET_KEY", "default_secret_key")
 MAPBOX_API_KEY = os.getenv("MAPBOX_API_KEY", "")
 
 # Connection to metadata database
-SQLALCHEMY_DATABASE_URI = f"postgresql://{os.getenv('SUPERSET_META_USER')}:{os.getenv('SUPERSET_META_PASS')}@metadata_db:{os.getenv('SUPERSET_META_PORT')}/superset"
+# Local docker-compose uses SUPERSET_META_* vars; AWS uses DATABASE_* vars.
+# Provide safe defaults so we never generate an invalid SQLAlchemy URL like ":None/".
+_META_USER = os.getenv("SUPERSET_META_USER") or os.getenv("DATABASE_USER") or "superset"
+_META_PASS = os.getenv("SUPERSET_META_PASS") or os.getenv("DATABASE_PASSWORD") or "superset"
+_META_HOST = os.getenv("SUPERSET_META_HOST") or os.getenv("DATABASE_HOST") or "metadata_db"
+_META_PORT = os.getenv("SUPERSET_META_PORT") or os.getenv("DATABASE_PORT") or "5432"
+SQLALCHEMY_DATABASE_URI = f"postgresql://{_META_USER}:{_META_PASS}@{_META_HOST}:{_META_PORT}/superset"
 
 FEATURE_FLAGS = {
     "HORIZONTAL_FILTER_BAR": True,
@@ -27,7 +33,8 @@ FEATURE_FLAGS = {
 }
 
 ####### Superset Customization ######
-APP_ICON = "/static/assets/images/custom_logos/logo.png"
+# Top-left navbar logo
+APP_ICON = "/static/assets/images/custom_logos/logo.svg"
 LOGO_TOOLTIP = "Navigates to the landing page"
 FAVICONS = [{"href": "/static/assets/images/custom_logos/favicon.png"}]
 APP_NAME = "Giga Mobile Simulation Tool"
@@ -55,9 +62,12 @@ EXTRA_CATEGORICAL_COLOR_SCHEMES = [
 # Celery Configuration
 class CeleryConfig:
     # Basic Celery Configuration (using new Celery 6.x naming conventions)
-    broker_url = os.getenv("CELERY_BROKER_URL", "redis://redis:6379/0")
+    # In AWS/ECS we pass REDIS_HOST/REDIS_PORT; avoid defaulting to redis:6379.
+    _redis_host = os.getenv("REDIS_HOST", "redis")
+    _redis_port = os.getenv("REDIS_PORT", "6379")
+    broker_url = os.getenv("CELERY_BROKER_URL") or f"redis://{_redis_host}:{_redis_port}/0"
     imports = ("superset.sql_lab", "superset.tasks")
-    result_backend = os.getenv("CELERY_RESULT_BACKEND", "redis://redis:6379/1")
+    result_backend = os.getenv("CELERY_RESULT_BACKEND") or f"redis://{_redis_host}:{_redis_port}/1"
     TASK_ACKS_LATE = True
     TASK_ANNOTATIONS = {
         "sql_lab.get_sql_results": {
@@ -81,9 +91,23 @@ class CeleryConfig:
 CELERY_CONFIG = CeleryConfig
 
 # Driver Settings
+# Used by Alerts & Reports and by dashboard download (PDF/image) features.
+# In AWS/ECS the celery containers must reach Superset via the ALB URL (not docker-compose hostnames).
 WEBDRIVER_TYPE = "firefox"
-WEBDRIVER_BASEURL = "http://superset_app:8088"
-WEBDRIVER_BASEURL_USER_FRIENDLY = "http://localhost:8088"
+_WEBDRIVER_BASEURL = (
+    os.getenv("WEBDRIVER_BASEURL")
+    or os.getenv("SUPERSET_PUBLIC_URL")
+    or "http://superset_app:8088"  # docker-compose default
+)
+WEBDRIVER_BASEURL = _WEBDRIVER_BASEURL
+WEBDRIVER_BASEURL_USER_FRIENDLY = (
+    os.getenv("WEBDRIVER_BASEURL_USER_FRIENDLY")
+    or os.getenv("SUPERSET_PUBLIC_URL")
+    or "http://localhost:8088"
+)
+
+# Public URL for links in emails and external access
+SUPERSET_WEBSERVER_PROTOCOL = os.getenv("SUPERSET_WEBSERVER_PROTOCOL", "http")
 
 # Webdriver options
 WEBDRIVER_OPTION_ARGS = [
@@ -121,12 +145,34 @@ EMAIL_REPORTS_SUBJECT_PREFIX = (
 
 
 # Configuring Caching
-REDIS_CACHE_URL = os.getenv("REDIS_CACHE_URL", "redis://redis:6379/0")
+# In docker-compose we can reach Redis at hostname "redis".
+# In AWS/ECS we pass REDIS_HOST/REDIS_PORT (ElastiCache endpoint) and may not set REDIS_CACHE_URL.
 REDIS_HOST = os.getenv("REDIS_HOST", "redis")
-REDIS_PORT = os.getenv("REDIS_PORT", 6379)
+REDIS_PORT = str(os.getenv("REDIS_PORT", "6379"))
+REDIS_CACHE_URL = os.getenv("REDIS_CACHE_URL") or f"redis://{REDIS_HOST}:{REDIS_PORT}/0"
+
+# Celery URLs
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL") or REDIS_CACHE_URL
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND") or f"redis://{REDIS_HOST}:{REDIS_PORT}/1"
 
 # Rate Limiting Storage (fixes flask_limiter in-memory warning)
 RATELIMIT_STORAGE_URI = REDIS_CACHE_URL
+
+# -----------------------------
+# Sessions / CSRF
+# -----------------------------
+# On ECS behind an ALB, make sessions server-side so CSRF tokens don't disappear.
+# Toggle cookie security when you move to HTTPS (set SESSION_COOKIE_SECURE=true).
+import redis as _redis
+
+ENABLE_PROXY_FIX = True
+SESSION_SERVER_SIDE = True
+SESSION_TYPE = "redis"
+SESSION_REDIS = _redis.from_url(REDIS_CACHE_URL)
+SESSION_KEY_PREFIX = "superset_session_"
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = os.getenv("SESSION_COOKIE_SAMESITE", "Lax")
+SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "false").lower() == "true"
 
 # Cache Config
 CACHE_CONFIG = {
@@ -170,6 +216,8 @@ ALERT_REPORTS_NOTIFICATION_DRY_RUN = False
 
 # Content Security Policy - allow unsafe-eval for JavaScript controls in charts
 TALISMAN_ENABLED = True
+# Flask-Talisman defaults to setting session cookies as Secure=True. That's correct for HTTPS,
+# but it breaks logins on HTTP-only deployments because the browser won't send the cookie.
 TALISMAN_CONFIG = {
     "content_security_policy": {
         "default-src": ["'self'"],
@@ -186,4 +234,6 @@ TALISMAN_CONFIG = {
     },
     "content_security_policy_nonce_in": ["script-src"],
     "force_https": False,
+    "session_cookie_secure": SESSION_COOKIE_SECURE,
+    "session_cookie_http_only": True,
 }

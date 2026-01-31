@@ -62,7 +62,7 @@ docker compose -f compose.init.yaml up --build
 This will:
 - Create the admin user
 - Run database migrations
-- Load example dashboards
+- Load example dashboards (only once; subsequent init runs skip because a marker is written in the persisted `superset_home` volume)
 
 ### 4. Start the Application
 
@@ -118,7 +118,8 @@ For production deployment on AWS, see the [AWS Deployment Guide](docs/AWS_DEPLOY
 
 Quick deploy:
 ```bash
-./scripts/deploy-aws.sh full
+./scripts/deploy-aws.sh full       # includes load-data
+./scripts/deploy-aws.sh init       # sets admin password + imports MST dashboards
 ```
 
 ## Project Structure

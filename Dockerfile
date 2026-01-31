@@ -57,10 +57,21 @@ RUN chmod +x /docker/*.sh && \
 COPY --chown=superset superset_config.py /app/
 ENV SUPERSET_CONFIG_PATH=/app/superset_config.py
 
+# Bundle MST Superset assets (dashboards/charts/datasets) so init can import them on AWS
+COPY --chown=superset examples/ /app/examples/
+
 # Create a folder for custom logos
 RUN mkdir -p /app/superset/static/assets/images/custom_logos/
 # Copy custom images (corrected path)
 COPY docker/src/img/ /app/superset/static/assets/images/custom_logos/
+
+# Superset 6 navbar may still reference built-in logo assets directly.
+# Override them so the top-left clickable logo shows MST branding.
+# - superset-logo-horiz.png: main navbar brand logo
+# - superset.png / s.png: smaller variants used in some layouts
+COPY docker/src/img/logo.png /app/superset/static/assets/images/superset-logo-horiz.png
+COPY docker/src/img/logo.png /app/superset/static/assets/images/superset.png
+COPY docker/src/img/logo.png /app/superset/static/assets/images/s.png
 
 # Create directory for Celery Beat schedule and assign permissions
 RUN mkdir -p /app/celerybeat && \
