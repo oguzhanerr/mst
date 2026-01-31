@@ -1,0 +1,145 @@
+{
+    "count": 3,
+    "description_columns": {},
+    "ids": [
+        1,
+        2,
+        3
+    ],
+    "label_columns": {
+        "active": "Active",
+        "changed_by.id": "Changed By Id",
+        "changed_on": "Changed On",
+        "created_by.id": "Created By Id",
+        "created_on": "Created On",
+        "email": "Email",
+        "fail_login_count": "Fail Login Count",
+        "first_name": "First Name",
+        "groups": "Groups",
+        "id": "Id",
+        "last_login": "Last Login",
+        "last_name": "Last Name",
+        "login_count": "Login Count",
+        "roles.id": "Roles Id",
+        "roles.name": "Roles Name",
+        "username": "Username"
+    },
+    "list_columns": [
+        "id",
+        "roles.id",
+        "roles.name",
+        "first_name",
+        "last_name",
+        "username",
+        "active",
+        "email",
+        "last_login",
+        "login_count",
+        "fail_login_count",
+        "created_on",
+        "changed_on",
+        "created_by.id",
+        "changed_by.id",
+        "groups"
+    ],
+    "list_title": "List User",
+    "order_columns": [
+        "id",
+        "roles.id",
+        "roles.name",
+        "first_name",
+        "last_name",
+        "username",
+        "active",
+        "email",
+        "last_login",
+        "login_count",
+        "fail_login_count",
+        "created_on",
+        "changed_on",
+        "created_by.id",
+        "changed_by.id"
+    ],
+    "result": [
+        {
+            "active": true,
+            "changed_by": null,
+            "changed_on": "2026-01-30T18:06:50.905025",
+            "created_by": null,
+            "created_on": "2026-01-30T18:06:50.905018",
+            "email": "example@admin.com",
+            "fail_login_count": null,
+            "first_name": "Superset",
+            "groups": [],
+            "id": 1,
+            "last_login": null,
+            "last_name": "Admin",
+            "login_count": null,
+            "roles": [
+                {
+                    "id": 1,
+                    "name": "Admin"
+                }
+            ],
+            "username": ""
+        },
+        {
+            "active": true,
+            "changed_by": null,
+            "changed_on": "2026-01-30T20:22:57.044136",
+            "created_by": null,
+            "created_on": "2026-01-30T20:22:57.044129",
+            "email": "admin@example.com",
+            "fail_login_count": 0,
+            "first_name": "Superset",
+            "groups": [],
+            "id": 2,
+            "last_login": "2026-01-31T13:15:36.551423",
+            "last_name": "Admin",
+            "login_count": 32,
+            "roles": [
+                {
+                    "id": 1,
+                    "name": "Admin"
+                }
+            ],
+            "username": "admin"
+        },
+        {
+            "active": true,
+            "changed_by": {
+                "id": 2
+            },
+            "changed_on": "2026-01-31T09:46:47.374148",
+            "created_by": null,
+            "created_on": "2026-01-31T09:20:07.773621",
+            "email": "example@itu.int",
+            "fail_login_count": 0,
+            "first_name": "MST",
+            "groups": [],
+            "id": 3,
+            "last_login": "2026-01-31T12:12:51.650173",
+            "last_name": "Viewer",
+            "login_count": 11,
+            "roles": [
+                {
+                    "id": 4,
+                    "name": "Gamma"
+                },
+                {
+                    "id": 2,
+                    "name": "Public"
+                },
+                {
+                    "id": 3,
+                    "name": "Alpha"
+                },
+                {
+                    "id": 5,
+                    "name": "sql_lab"
+                }
+            ],
+            "username": "mst_viewer"
+        }
+    ]
+}
