@@ -27,6 +27,11 @@ jobs:
         run: |
           yamllint -d relaxed compose.yaml compose.init.yaml
 
+      - name: Create dummy env files for validation
+        run: |
+          mkdir -p env
+          touch env/.superset.env env/.metadata.env env/.database.env
+
       - name: Validate Docker Compose files
         run: |
           docker compose -f compose.yaml config --quiet
@@ -187,8 +192,8 @@ jobs:
         run: |
           echo "Checking healthcheck definitions in compose.yaml..."
           
-          # Check celery_worker healthcheck
-          if grep -A5 'celery_worker:' compose.yaml | grep -q 'healthcheck:'; then
+          # Check celery_worker healthcheck (search within service block)
+          if grep -A20 'celery_worker:' compose.yaml | grep -q 'healthcheck:'; then
             echo "✓ celery_worker has healthcheck defined"
           else
             echo "✗ celery_worker should have healthcheck defined"
@@ -196,7 +201,7 @@ jobs:
           fi
           
           # Check celery_beat healthcheck
-          if grep -A5 'celery_beat:' compose.yaml | grep -q 'healthcheck:'; then
+          if grep -A20 'celery_beat:' compose.yaml | grep -q 'healthcheck:'; then
             echo "✓ celery_beat has healthcheck defined"
           else
             echo "✗ celery_beat should have healthcheck defined"
