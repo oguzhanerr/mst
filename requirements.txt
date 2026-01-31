@@ -3,7 +3,7 @@ psycopg2-binary==2.9.10
 # Snowflake SQLAlchemy connector
 snowflake-sqlalchemy==1.7.7
 # Celery and Redis for async processing and messaging
-celery[redis]==5.5.3
+celery[redis]==5.6.2
 # Redis client library
 redis==5.0.8
 # WSGI HTTP server for running Superset (Web Server Gateway Interface (WSGI)
