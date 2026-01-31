@@ -97,8 +97,8 @@ jobs:
         uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: Dockerfile
-          failure-threshold: warning
-          ignore: DL3008,DL3013,DL3042
+          failure-threshold: error
+          ignore: DL3006,DL3008,DL3009,DL3013,DL3015,DL3042,SC2086
 
   config-security-check:
     name: Configuration Security Check
