@@ -1,0 +1,251 @@
+name: Test & Security
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-validate:
+    name: Lint & Validate Configuration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install linting tools
+        run: |
+          pip install yamllint
+
+      - name: Lint YAML files
+        run: |
+          yamllint -d relaxed compose.yaml compose.init.yaml
+
+      - name: Validate Docker Compose files
+        run: |
+          docker compose -f compose.yaml config --quiet
+          docker compose -f compose.init.yaml config --quiet
+
+      - name: Validate Python syntax
+        run: |
+          python -m py_compile superset_config.py
+
+  docker-build:
+    name: Docker Build Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Superset image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          tags: mst-superset:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build Database image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./database
+          file: ./database/Dockerfile
+          push: false
+          tags: mst-database:test
+          platforms: linux/amd64
+
+  security-scan:
+    name: Security Scanning
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner (filesystem)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '0'  # Don't fail on vulnerabilities, just report
+          format: 'table'
+
+      - name: Check for hardcoded secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ""
+          extra_args: --only-verified
+
+      - name: Run Hadolint on Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+          failure-threshold: warning
+          ignore: DL3008,DL3013,DL3042
+
+  config-security-check:
+    name: Configuration Security Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for default secret key usage
+        run: |
+          echo "Checking superset_config.py for security issues..."
+          
+          # Check that SECRET_KEY uses environment variable
+          if grep -q 'SECRET_KEY.*=.*os.getenv' superset_config.py; then
+            echo "✓ SECRET_KEY is configured via environment variable"
+          else
+            echo "✗ SECRET_KEY should be set via environment variable"
+            exit 1
+          fi
+
+      - name: Verify security headers are enabled
+        run: |
+          # Check Talisman is enabled
+          if grep -q 'TALISMAN_ENABLED = True' superset_config.py; then
+            echo "✓ Talisman security headers enabled"
+          else
+            echo "✗ Talisman should be enabled for security headers"
+            exit 1
+          fi
+
+      - name: Check session security configuration
+        run: |
+          # Check server-side sessions
+          if grep -q 'SESSION_SERVER_SIDE = True' superset_config.py; then
+            echo "✓ Server-side sessions enabled"
+          else
+            echo "✗ Server-side sessions should be enabled"
+            exit 1
+          fi
+          
+          # Check HTTP-only cookies
+          if grep -q 'SESSION_COOKIE_HTTPONLY = True' superset_config.py; then
+            echo "✓ HTTP-only session cookies enabled"
+          else
+            echo "✗ HTTP-only session cookies should be enabled"
+            exit 1
+          fi
+
+      - name: Check for sensitive data in tracked files
+        run: |
+          # Ensure env files are not tracked (should be in .gitignore)
+          if git ls-files --error-unmatch env/.superset.env 2>/dev/null; then
+            echo "✗ Environment files should not be tracked in git"
+            exit 1
+          else
+            echo "✓ Environment files are properly gitignored"
+          fi
+
+  healthcheck-test:
+    name: Container Health Check Test
+    runs-on: ubuntu-latest
+    needs: docker-build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create test environment files
+        run: |
+          mkdir -p env
+          cat > env/.superset.env << 'EOF'
+          SUPERSET_SECRET_KEY=test-secret-key-for-ci-only
+          SUPERSET_META_USER=superset
+          SUPERSET_META_PASS=superset
+          SUPERSET_META_HOST=metadata_db
+          SUPERSET_META_PORT=5432
+          EOF
+          
+          cat > env/.metadata.env << 'EOF'
+          POSTGRES_USER=superset
+          POSTGRES_PASSWORD=superset
+          POSTGRES_DB=superset
+          EOF
+          
+          cat > env/.database.env << 'EOF'
+          POSTGRES_USER=mst
+          POSTGRES_PASSWORD=mst
+          POSTGRES_DB=mst
+          EOF
+
+      - name: Verify healthcheck commands are defined
+        run: |
+          echo "Checking healthcheck definitions in compose.yaml..."
+          
+          # Check celery_worker healthcheck
+          if grep -A5 'celery_worker:' compose.yaml | grep -q 'healthcheck:'; then
+            echo "✓ celery_worker has healthcheck defined"
+          else
+            echo "✗ celery_worker should have healthcheck defined"
+            exit 1
+          fi
+          
+          # Check celery_beat healthcheck
+          if grep -A5 'celery_beat:' compose.yaml | grep -q 'healthcheck:'; then
+            echo "✓ celery_beat has healthcheck defined"
+          else
+            echo "✗ celery_beat should have healthcheck defined"
+            exit 1
+          fi
+
+      - name: Verify restart policies
+        run: |
+          echo "Checking restart policies..."
+          
+          # Check superset has restart policy
+          if grep -A3 'superset:' compose.yaml | grep -q 'restart:'; then
+            echo "✓ superset service has restart policy"
+          else
+            echo "✗ superset service should have restart policy"
+            exit 1
+          fi
+
+  dockerfile-best-practices:
+    name: Dockerfile Best Practices
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for non-root user
+        run: |
+          # Verify Dockerfile switches to non-root user
+          if grep -q '^USER superset' Dockerfile; then
+            echo "✓ Dockerfile runs as non-root user (superset)"
+          else
+            echo "✗ Dockerfile should run as non-root user"
+            exit 1
+          fi
+
+      - name: Check for proper cleanup
+        run: |
+          # Verify apt cleanup
+          if grep -q 'apt-get clean' Dockerfile || grep -q 'rm -rf /var/lib/apt/lists' Dockerfile; then
+            echo "✓ Dockerfile cleans up apt cache"
+          else
+            echo "⚠ Consider adding apt cache cleanup to reduce image size"
+          fi
+
+      - name: Verify COPY ownership
+        run: |
+          # Check that sensitive files have proper ownership
+          if grep -q 'COPY --chown=superset' Dockerfile; then
+            echo "✓ Dockerfile uses --chown for proper file ownership"
+          else
+            echo "⚠ Consider using --chown in COPY commands"
+          fi
