@@ -1,7 +1,7 @@
 # PostgreSQL driver for SQLAlchemy
 psycopg2-binary==2.9.10
 # Snowflake SQLAlchemy connector
-snowflake-sqlalchemy==1.7.7
+snowflake-sqlalchemy==1.8.2
 # Celery and Redis for async processing and messaging
 celery[redis]==5.6.2
 # Redis client library
