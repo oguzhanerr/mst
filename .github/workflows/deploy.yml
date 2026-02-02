@@ -33,7 +33,7 @@ jobs:
     if: ${{ github.event.inputs.skip_tests != 'true' }}
     steps:
       - name: Check test workflow status
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const { data: runs } = await github.rest.actions.listWorkflowRuns({
