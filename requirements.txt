@@ -11,4 +11,4 @@ gunicorn==24.1.1
 # Asynchronous worker library for concurrency
 gevent==25.9.1
 # For image processing (screenshots, etc.)
-Pillow==12.1.0
+Pillow==12.1.1
